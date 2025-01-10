@@ -3,7 +3,6 @@ body {
 }
 
 .container {
-  width: 50%;
-  float: left;
-  text-align: justify;
+  border-left: 120px solid snow;
+  border-right: 120px solid snow;
 }
