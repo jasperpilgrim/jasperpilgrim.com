@@ -22,4 +22,9 @@ nav li {
 
 nav a {
   text-decoration: none;
+  -webkit-tap-highlight-color: transparent; /* mobile */
+}
+
+nav a:visited {
+  color: blue;
 }
