@@ -2,6 +2,10 @@ body {
   background-color: snow;
 }
 
+a:visited {
+  color: blue;
+}
+
 .container {
   width: 50%;
   margin: auto;
@@ -22,10 +26,6 @@ nav li {
 nav a {
   text-decoration: none;
   -webkit-tap-highlight-color: transparent; /* mobile */
-}
-
-nav a:visited {
-  color: blue;
 }
 
 .code-link {
