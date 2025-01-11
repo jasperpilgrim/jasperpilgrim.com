@@ -30,3 +30,19 @@ nav li {
 .code-link {
   list-style: none;
 }
+
+/* mobile + smaller screens */
+@media (max-width: 600px) {
+  .container {
+    width: 100%;
+  }
+
+  nav ul {
+    text-align: center;
+  }
+
+  nav li {
+    display: block;
+    margin: 10px 0; 
+  }
+}
