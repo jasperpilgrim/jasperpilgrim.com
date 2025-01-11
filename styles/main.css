@@ -19,7 +19,7 @@ nav ul {
   list-style: none;
   margin: 0;
   padding: 0;
-  text-align: center;
+  text-align: left;
 }
 
 nav li {
@@ -37,8 +37,12 @@ nav li {
     width: 100%;
   }
 
+  nav ul {
+    text-align: center;
+  }
+
   nav li {
     display: block;
-    margin: 10px 0; 
+    margin: 10px 0;
   }
 }
