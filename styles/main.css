@@ -1,13 +1,15 @@
 body {
-  background-color: snow;
+  background-color: #000000;
+  color: #69FFB4;
 }
 
 a {
   text-decoration: none;
+  color: #FF69FF;
 }
 
 a:visited {
-  color: blue;
+  color: #FF69FF;
 }
 
 .container {
