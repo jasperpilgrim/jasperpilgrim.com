@@ -48,13 +48,3 @@ nav li {
     margin: 10px 0;
   }
 }
-
-pre code {
-  background-color: #191919;
-  border: 1px solid #323232;
-  display: block;
-  padding: 20px;
-  white-space: pre-wrap;
-  font-family: monospace;
-  overflow-x: auto;
-}
