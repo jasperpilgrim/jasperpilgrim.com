@@ -2,6 +2,10 @@ body {
   background-color: snow;
 }
 
+a {
+  text-decoration: none;
+}
+
 a:visited {
   color: blue;
 }
@@ -21,10 +25,6 @@ nav ul {
 nav li {
   display: inline-block;
   margin: 0 15px;
-}
-
-nav a {
-  text-decoration: none;
 }
 
 .code-link {
