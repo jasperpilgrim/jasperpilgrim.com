@@ -1,45 +1,45 @@
 body {
-  background-color: #000000;
-  color: #FDFDFD;
+	background-color: #000000;
+	color: #FDFDFD;
 }
 
 a {
-  text-decoration: none;
-  color: #FF69FF;
+	text-decoration: none;
+	color: #FF69FF;
 }
 
 a:visited {
-  color: #FF69FF;
+	color: #FF69FF;
 }
 
 .container {
-  width: 75%;
-  margin: auto;
+	width: 75%;
+	margin: auto;
 }
 
 nav ul {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  text-align: right;
+	list-style: none;
+	margin: 0;
+	padding: 0;
+	text-align: right;
 }
 
 nav li {
-  display: inline-block;
-  margin: 0 7px;
+	display: inline-block;
+	margin: 0 7px;
 }
 
 .code-link {
-  list-style: none;
+	list-style: none;
 }
 
 /* mobile + smaller screens */
 @media (max-width: 600px) {
-  .container {
-    width: 100%;
-  }
+	.container {
+		width: 100%;
+	}
 
-  /* nav ul {
+	/* nav ul {
     text-align: right;
   }
 
