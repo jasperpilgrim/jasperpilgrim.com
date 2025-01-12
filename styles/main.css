@@ -33,6 +33,11 @@ nav li {
 	list-style: none;
 }
 
+pre {
+  white-space: pre-wrap;
+  tab-size: 2;
+}
+
 /* mobile + smaller screens */
 @media (max-width: 600px) {
 	.container {
