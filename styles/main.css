@@ -30,7 +30,7 @@ nav li {
 }
 
 .code-link {
-	list-style: none;
+	list-style: circle;
 }
 
 pre {
