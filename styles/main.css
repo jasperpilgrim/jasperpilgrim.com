@@ -24,6 +24,7 @@ nav ul {
 	margin: 0;
 	padding: 0;
 	text-align: right;
+	border-bottom: 1px solid #D3D3D3;
 }
 
 nav li {
