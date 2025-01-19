@@ -31,9 +31,8 @@ nav li {
 	margin: 0 5px;
 }
 
-nav a:hover {
+a:hover {
   color: #FF00FF;
-  text-decoration: underline; 
 }
 
 .code-link {
