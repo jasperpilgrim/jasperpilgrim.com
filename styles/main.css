@@ -9,6 +9,10 @@ a {
 	color: #FD78C5;
 }
 
+a:hover {
+  color: #FF00FF;
+}
+
 a:visited {
 	color: #FF69FF;
 }
@@ -28,10 +32,6 @@ nav ul {
 nav li {
 	display: inline-block;
 	margin: 0 5px;
-}
-
-a:hover {
-  color: #FF00FF;
 }
 
 .code-link {
