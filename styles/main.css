@@ -9,12 +9,12 @@ a {
 	color: #FD78C5;
 }
 
-a:hover {
-  color: #FF00FF;
-}
-
 a:visited {
 	color: #FD78C5;
+}
+
+a:hover {
+  color: #E667B3;
 }
 
 .container {
