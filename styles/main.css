@@ -49,7 +49,7 @@ nav li {
 }
 
 .project-link {
-	list-style: circle;
+	list-style: "- ";
 }
 
 pre {
