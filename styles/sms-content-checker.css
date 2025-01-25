@@ -6,6 +6,10 @@
 	resize: none;
 }
 
+#optimizedContent {
+  color: #50FA7B;
+}
+
 .input-wrapper {
   display: flex;
   flex-direction: column;

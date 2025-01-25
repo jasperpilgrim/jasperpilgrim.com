@@ -90,9 +90,17 @@ smsContent.addEventListener("input", () => {
   }
 
   // Exclamation point check
-  if ((content.match(/!/g) || []).length > 1) {
+  let optimizedContent = content.replace(/!!+/g, "!"); // Replace multiple "!" with single "!"
+
+  const exclamationCount = (optimizedContent.match(/!/g) || []).length;
+  if (exclamationCount > 1) {
     warningGroups.content.push(
       "Limit the use of exclamation points to once per message."
+    );
+
+    // Replace all but the first "!" with "."
+    optimizedContent = optimizedContent.replace(/!/g, (match, offset, string) =>
+      (offset === string.indexOf("!") ? "!" : ".")
     );
   }
 
@@ -162,4 +170,13 @@ smsContent.addEventListener("input", () => {
           `;
     }
   }
+
+  // Display the optimized message
+  let optimizedContentDiv = document.getElementById('optimizedContent');
+  if (!optimizedContentDiv) {
+    optimizedContentDiv = document.createElement('div');
+    optimizedContentDiv.id = 'optimizedContent';
+    charCount.parentNode.insertBefore(optimizedContentDiv, charCount.nextSibling);
+  }
+  optimizedContentDiv.innerHTML = `<p>Optimized Content: ${optimizedContent}</p>`;
 });
