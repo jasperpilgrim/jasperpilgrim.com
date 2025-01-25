@@ -45,17 +45,19 @@ smsContent.addEventListener("input", () => {
 
   // Detect GSM-7 vs UCS-2 encoding
   let charLimit = 160; // Default to GSM-7
+  let encodingWarning = "";
   if (/[^\x00-\x7F\n\r]/.test(content)) {
     // Check for non-GSM-7 characters
     charLimit = 70; // Switch to UCS-2
+    encodingWarning =
+      "Your message contains characters that require UCS-2 encoding. This reduces the character limit to 70.";
   }
 
   // Character count with highlighting and dynamic Limit
   const currentLength = content.length;
   charCount.innerHTML = `
-      <span style="${
-        currentLength > charLimit ? "color: red; font-weight: bold;" : ""
-      }">${currentLength}</span>/${charLimit}
+      <span style="${currentLength > charLimit ? "color: red; font-weight: bold;" : ""
+    }">${currentLength}</span>/${charLimit}
     `;
 
   // Group warnings
@@ -144,14 +146,16 @@ smsContent.addEventListener("input", () => {
     if (warningGroups[group].length > 0) {
       warnings.innerHTML += `
             <div class="warning-group">
-              <h3 class="warning-group-title">${
-                group.charAt(0).toUpperCase() + group.slice(1)
-              }:</h3>
+              <h3 class="warning-group-title">${group.charAt(0).toUpperCase() + group.slice(1)
+        }:</h3>
               ${warningGroups[group]
-                .map((warning) => `<p class="warning">${warning}</p>`)
-                .join("")}
+          .map((warning) => `<p class="warning">${warning}</p>`)
+          .join("")}
             </div>
           `;
     }
+  }
+  if (encodingWarning) {
+    warnings.innerHTML += `<div class="warning-group"><p class="warning">${encodingWarning}</p></div>`;
   }
 });
