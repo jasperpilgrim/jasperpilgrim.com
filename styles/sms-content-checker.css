@@ -3,6 +3,17 @@
   height: 150px;
   padding: 10px; 
   font-size: 16px;
+	resize: none;
+}
+
+.input-wrapper {
+  display: flex;
+  flex-direction: column;
+}
+
+#charCount {
+  align-self: flex-end;
+  margin-top: 5px;
 }
 
 .warning-group {
