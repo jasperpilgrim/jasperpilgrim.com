@@ -43,15 +43,22 @@ smsContent.addEventListener("input", () => {
   warnings.innerHTML = "";
   const content = smsContent.value.trim();
 
+  // Group warnings  (Moved to the beginning)
+  const warningGroups = {
+    length: [],
+    content: [],
+    formatting: []
+  };
+
   // Detect GSM-7 vs UCS-2 encoding
   let charLimit = 160; // Default to GSM-7
-  let encodingWarning = "";
   if (/[^\x00-\x7F\n\r]/.test(content)) {
-    // Check for non-GSM-7 characters
     charLimit = 70; // Switch to UCS-2
-    encodingWarning =
-      "Your message contains characters that require UCS-2 encoding. This reduces the character limit to 70.";
+    warningGroups.length.push(
+      "Your message contains characters that require UCS-2 encoding, which reduces the character limit."
+    );
   }
+
 
   // Character count with highlighting and dynamic Limit
   const currentLength = content.length;
@@ -60,18 +67,10 @@ smsContent.addEventListener("input", () => {
     }">${currentLength}</span>/${charLimit}
     `;
 
-  // Group warnings
-  const warningGroups = {
-    length: [],
-    content: [],
-    formatting: []
-  };
-
   // Length check
-  if (content.length > charLimit && charLimit === 160) {
-    // Only warn if exceeding GSM-7 limit
+  if (content.length > charLimit) {
     warningGroups.length.push(
-      "Your message exceeds the recommended maximum of 160 characters. Please consider shortening it."
+      `Your message exceeds the character limit (${charLimit}). Please consider shortening it.`
     );
   }
 
@@ -154,8 +153,5 @@ smsContent.addEventListener("input", () => {
             </div>
           `;
     }
-  }
-  if (encodingWarning) {
-    warnings.innerHTML += `<div class="warning-group"><p class="warning">${encodingWarning}</p></div>`;
   }
 });
