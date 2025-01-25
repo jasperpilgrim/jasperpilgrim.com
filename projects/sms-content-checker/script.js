@@ -61,7 +61,7 @@ smsContent.addEventListener("input", () => {
     );
   }
 
-  // Character count with highlighting and dynamic Limit
+  // Character count with highlighting and dynamic limit
   const currentLength = content.length;
   charCount.innerHTML = `
       <span style="${currentLength > charLimit ? "color: #FF5555; font-weight: bold;" : ""
@@ -72,6 +72,13 @@ smsContent.addEventListener("input", () => {
   if (content.length > charLimit) {
     warningGroups.length.push(
       `Your message exceeds the character limit (${charLimit}).`
+    );
+  }
+
+  // Dollar sign check
+  if (content.includes("$")) {
+    warningGroups.content.push(
+      "Dollar signs ($) are not recommended. Please use alternatives like 'USD' or 'CAN'."
     );
   }
 
