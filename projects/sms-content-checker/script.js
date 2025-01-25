@@ -115,7 +115,7 @@ smsContent.addEventListener("input", () => {
 
   if (flaggedWordsAndPhrases.length > 0) {
     warningGroups.content.push(
-      `${wordsAndPhrasesWarning} "${flaggedWordsAndPhrases.join(", ")}". Please consider using alternatives.`
+      `${wordsAndPhrasesWarning} "${flaggedWordsAndPhrases.join(", ")}".`
     );
   }
 
