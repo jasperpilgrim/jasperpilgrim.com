@@ -90,6 +90,7 @@ smsContent.addEventListener("input", () => {
     warningGroups.content.push(
       `Emojis can inadvertently lead to carrier filtering.`
     );
+    // Remove emojis from optimized content
     optimizedContent = optimizedContent.replace(emojiRegex(), "");
   }
 
@@ -108,12 +109,23 @@ smsContent.addEventListener("input", () => {
   }
 
   // @ Symbol and URL check
-  const urlRegex = /[@]|(?:https?:\/\/)?(?:www\.)?[a-zA-Z0-9-]+(?:\.[a-zA-Z]{2,})+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=]*\/?/gi;
-  if (urlRegex.test(content)) {
+  const urlRegex = /(?:https?:\/\/)?(?:www\.)?[a-zA-Z0-9-]+(?:\.[a-zA-Z]{2,})+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=]*\/?/gi;
+  const emailRegex = /\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}\b/g; 
+
+  if (urlRegex.test(content) || emailRegex.test(content)) {
     warningGroups.content.push(
       `"At" symbols (@) and URLs could potentially lead to carrier filtering.`
     );
+
+    // Highlight email addresses first
+    optimizedContent = optimizedContent.replace(emailRegex, (match) => `<span style="background-color: #FF5555;">${match}</span>`); 
+
+    // Then highlight URLs 
+    optimizedContent = optimizedContent.replace(urlRegex, '<span style="background-color: #FF5555;">$&</span>');
   }
+
+  // Replace standalone '@' symbols with 'at'
+  optimizedContent = optimizedContent.replace(/(^|\s)@(\s|$)/g, '$1at$2');
 
   // Words and phrases to avoid
   const wordsAndPhrasesWarning = `The following words or phrases are not recommended for SMS: `;
