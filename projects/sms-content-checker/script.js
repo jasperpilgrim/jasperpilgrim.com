@@ -63,7 +63,7 @@ smsContent.addEventListener("input", () => {
   // Character count with highlighting and dynamic Limit
   const currentLength = content.length;
   charCount.innerHTML = `
-      <span style="${currentLength > charLimit ? "color: red; font-weight: bold;" : ""
+      <span style="${currentLength > charLimit ? "color: #FF5555; font-weight: bold;" : ""
     }">${currentLength}</span>/${charLimit}
     `;
 
