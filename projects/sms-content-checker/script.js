@@ -75,27 +75,30 @@ smsContent.addEventListener("input", () => {
     );
   }
 
+  let optimizedContent = content;
+
   // Dollar sign check
-  if (content.includes("$")) {
+  const dollarSignCount = (content.match(/\$/g) || []).length;
+  if (dollarSignCount > 0) {
     warningGroups.content.push(
-      "Dollar signs ($) are not recommended. Please use alternatives like 'USD' or 'CAN'."
+      `Dollar signs ($) are not recommended. Consider alternatives like "USD" or "CAN".`
     );
   }
 
   // Emoji check
   if (emojiRegex().test(content)) {
     warningGroups.content.push(
-      "Emojis can inadvertently lead to carrier filtering."
+      `Emojis can inadvertently lead to carrier filtering.`
     );
   }
 
   // Exclamation point check
-  let optimizedContent = content.replace(/!!+/g, "!"); // Replace multiple "!" with single "!"
+  optimizedContent = content.replace(/!!+/g, "!"); // Replace multiple "!" with single "!"
 
   const exclamationCount = (optimizedContent.match(/!/g) || []).length;
   if (exclamationCount > 1) {
     warningGroups.content.push(
-      "Limit the use of exclamation points to once per message."
+      `Limit the use of exclamation points to once per message.`
     );
 
     // Replace all but the first "!" with "."
@@ -108,12 +111,12 @@ smsContent.addEventListener("input", () => {
   const urlRegex = /[@]|(?:https?:\/\/)?(?:www\.)?[a-zA-Z0-9-]+(?:\.[a-zA-Z]{2,})+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=]*\/?/gi;
   if (urlRegex.test(content)) {
     warningGroups.content.push(
-      '"At" symbols (@) and URLs could potentially lead to carrier filtering.'
+      `"At" symbols (@) and URLs could potentially lead to carrier filtering.`
     );
   }
 
   // Words and phrases to avoid
-  const wordsAndPhrasesWarning = "The following words or phrases are not recommended for SMS: ";
+  const wordsAndPhrasesWarning = `The following words or phrases are not recommended for SMS: `;
   let flaggedWordsAndPhrases = [];
 
   const checkWordsAndPhrases = (arr) => {
@@ -172,6 +175,7 @@ smsContent.addEventListener("input", () => {
   }
 
   // Display the optimized message
+  smsContent.value = optimizedContent;
   let optimizedContentDiv = document.getElementById('optimizedContent');
   if (!optimizedContentDiv) {
     optimizedContentDiv = document.createElement('div');
