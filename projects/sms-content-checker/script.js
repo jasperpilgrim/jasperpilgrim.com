@@ -57,7 +57,7 @@ smsContent.addEventListener("input", () => {
     // Find all non-GSM-7 characters
     ucs2Chars = content.match(/[^\x00-\x7F\n\r]/g).join("");
     warningGroups.length.push(
-      `Your message contains characters that require UCS-2 encoding (${ucs2Chars}), which reduces the character limit.`
+      `Your message contains characters that require UCS-2 encoding (${ucs2Chars}), which reduces the character limit from 160 to 70.`
     );
   }
 
@@ -71,21 +71,21 @@ smsContent.addEventListener("input", () => {
   // Length check
   if (content.length > charLimit) {
     warningGroups.length.push(
-      `Your message exceeds the character limit (${charLimit}). Please consider shortening it.`
+      `Your message exceeds the character limit (${charLimit}).`
     );
   }
 
   // Emoji check
   if (emojiRegex().test(content)) {
     warningGroups.content.push(
-      "Emojis can inadvertently lead to carrier filtering. Please consider removing them."
+      "Emojis can inadvertently lead to carrier filtering."
     );
   }
 
   // Exclamation point check
   if ((content.match(/!/g) || []).length > 1) {
     warningGroups.content.push(
-      "Please limit the use of exclamation points to once per message."
+      "Limit the use of exclamation points to once per message."
     );
   }
 
@@ -98,24 +98,24 @@ smsContent.addEventListener("input", () => {
   }
 
   // Words and phrases to avoid
-  const checkWordsAndPhrases = (arr, message) => {
+  const wordsAndPhrasesWarning = "The following words or phrases are not recommended for SMS: ";
+  let flaggedWordsAndPhrases = [];
+
+  const checkWordsAndPhrases = (arr) => {
     for (const item of arr) {
       const regex = new RegExp(`\\b${item}\\b`, "gi");
-      if (regex.test(content)) {
-        warningGroups.content.push(
-          `${message} "${item}" is not recommended for SMS. Please consider using an alternative.`
-        );
+      if (regex.test(content) && !flaggedWordsAndPhrases.includes(item)) {
+        flaggedWordsAndPhrases.push(item);
       }
     }
   };
 
-  checkWordsAndPhrases(wordsToAvoid, "The word");
-  checkWordsAndPhrases(phrasesToAvoid, "The phrase");
+  checkWordsAndPhrases(wordsToAvoid);
+  checkWordsAndPhrases(phrasesToAvoid);
 
-  // $ Symbol check
-  if (content.includes("$")) {
+  if (flaggedWordsAndPhrases.length > 0) {
     warningGroups.content.push(
-      "Dollar signs ($) are not recommended. Please use alternatives like 'USD' or 'CAN'"
+      `${wordsAndPhrasesWarning} "${flaggedWordsAndPhrases.join(", ")}". Please consider using alternatives.`
     );
   }
 
