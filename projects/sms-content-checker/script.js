@@ -90,6 +90,7 @@ smsContent.addEventListener("input", () => {
     warningGroups.content.push(
       `Emojis can inadvertently lead to carrier filtering.`
     );
+    optimizedContent = optimizedContent.replace(emojiRegex(), "");
   }
 
   // Exclamation point check
