@@ -47,6 +47,10 @@ nav li {
 	margin: 0 5px;
 }
 
+.project-list {
+	list-style: none;
+}
+
 pre {
   tab-size: 2;
 }
