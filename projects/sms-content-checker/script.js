@@ -114,7 +114,7 @@ smsContent.addEventListener("input", () => {
   // $ Symbol check
   if (content.includes("$")) {
     warningGroups.formatting.push(
-      "Dollar signs ($) are not recommended. Please use alternatives like 'USD' or 'CAN'"
+      "Dollar signs ($) are not recommended. Please use alternatives like 'USD' or 'CAN'."
     );
   }
 
