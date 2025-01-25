@@ -68,8 +68,8 @@ smsContent.addEventListener("input", () => {
   };
 
   // Length check
-  if (content.length > charLimit) {
-    // Use dynamic charLimit
+  if (content.length > charLimit && charLimit === 160) {
+    // Only warn if exceeding GSM-7 limit
     warningGroups.length.push(
       "Your message exceeds the recommended maximum of 160 characters. Please consider shortening it."
     );
