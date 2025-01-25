@@ -43,7 +43,7 @@ smsContent.addEventListener("input", () => {
   warnings.innerHTML = "";
   const content = smsContent.value.trim();
 
-  // Group warnings  (Moved to the beginning)
+  // Group warnings
   const warningGroups = {
     length: [],
     content: [],
@@ -81,7 +81,7 @@ smsContent.addEventListener("input", () => {
   const dollarSignCount = (content.match(/\$/g) || []).length;
   if (dollarSignCount > 0) {
     warningGroups.content.push(
-      `Dollar signs ($) are not recommended. Consider alternatives like "USD" or "CAN".`
+      `Dollar signs ($) are not recommended. Consider alternatives like 'USD' or 'CAN'.`
     );
   }
 
@@ -93,15 +93,14 @@ smsContent.addEventListener("input", () => {
   }
 
   // Exclamation point check
-  optimizedContent = content.replace(/!!+/g, "!"); // Replace multiple "!" with single "!"
+  optimizedContent = optimizedContent.replace(/!!+/g, "!"); // Replace multiple "!" with single "!"
 
-  const exclamationCount = (optimizedContent.match(/!/g) || []).length;
+  const exclamationCount = (content.match(/!/g) || []).length;
   if (exclamationCount > 1) {
     warningGroups.content.push(
       `Limit the use of exclamation points to once per message.`
     );
 
-    // Replace all but the first "!" with "."
     optimizedContent = optimizedContent.replace(/!/g, (match, offset, string) =>
       (offset === string.indexOf("!") ? "!" : ".")
     );
@@ -174,8 +173,7 @@ smsContent.addEventListener("input", () => {
     }
   }
 
-  // Display the optimized message
-  smsContent.value = optimizedContent;
+  // Display the optimized content
   let optimizedContentDiv = document.getElementById('optimizedContent');
   if (!optimizedContentDiv) {
     optimizedContentDiv = document.createElement('div');
