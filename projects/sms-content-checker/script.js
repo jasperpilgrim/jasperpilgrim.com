@@ -52,12 +52,15 @@ smsContent.addEventListener("input", () => {
 
   // Detect GSM-7 vs UCS-2 encoding
   let charLimit = 160; // Default to GSM-7
-  if (/[^\x00-\x7F\n\r]/.test(content)) {
-    charLimit = 70; // Switch to UCS-2
-    warningGroups.length.push(
-      "Your message contains characters that require UCS-2 encoding, which reduces the character limit from 160 to 70."
-    );
-  }
+let ucs2Chars = "";
+if (/[^\x00-\x7F\n\r]/.test(content)) {
+  charLimit = 70; // Switch to UCS-2
+  // Find all non-GSM-7 characters
+  ucs2Chars = content.match(/[^\x00-\x7F\n\r]/g).join(""); 
+  warningGroups.length.push(
+    `Your message contains characters that require UCS-2 encoding (${ucs2Chars}), which reduces the character limit.`
+  );
+}
 
 
   // Character count with highlighting and dynamic Limit
