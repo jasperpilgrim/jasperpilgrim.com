@@ -55,7 +55,7 @@ smsContent.addEventListener("input", () => {
   if (/[^\x00-\x7F\n\r]/.test(content)) {
     charLimit = 70; // Switch to UCS-2
     warningGroups.length.push(
-      "Your message contains characters that require UCS-2 encoding, which reduces the character limit."
+      "Your message contains characters that require UCS-2 encoding, which reduces the character limit from 160 to 70."
     );
   }
 
