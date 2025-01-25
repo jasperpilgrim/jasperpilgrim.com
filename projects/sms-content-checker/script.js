@@ -47,7 +47,6 @@ smsContent.addEventListener("input", () => {
   const warningGroups = {
     length: [],
     content: [],
-    formatting: []
   };
 
   // Detect GSM-7 vs UCS-2 encoding
@@ -61,7 +60,6 @@ smsContent.addEventListener("input", () => {
       `Your message contains characters that require UCS-2 encoding (${ucs2Chars}), which reduces the character limit.`
     );
   }
-
 
   // Character count with highlighting and dynamic Limit
   const currentLength = content.length;
@@ -86,7 +84,7 @@ smsContent.addEventListener("input", () => {
 
   // Exclamation point check
   if ((content.match(/!/g) || []).length > 1) {
-    warningGroups.formatting.push(
+    warningGroups.content.push(
       "Please limit the use of exclamation points to once per message."
     );
   }
@@ -94,7 +92,7 @@ smsContent.addEventListener("input", () => {
   // @ Symbol and URL check
   const urlRegex = /[@]|(?:https?:\/\/)?(?:www\.)?[a-zA-Z0-9-]+(?:\.[a-zA-Z]{2,})+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=]*\/?/gi;
   if (urlRegex.test(content)) {
-    warningGroups.formatting.push(
+    warningGroups.content.push(
       '"At" symbols (@) and URLs could potentially lead to carrier filtering.'
     );
   }
@@ -116,8 +114,8 @@ smsContent.addEventListener("input", () => {
 
   // $ Symbol check
   if (content.includes("$")) {
-    warningGroups.formatting.push(
-      "Dollar signs ($) are not recommended. Please use alternatives like 'USD' or 'CAN'."
+    warningGroups.content.push(
+      "Dollar signs ($) are not recommended. Please use alternatives like 'USD' or 'CAN'"
     );
   }
 
@@ -136,7 +134,7 @@ smsContent.addEventListener("input", () => {
   ];
 
   if (uppercaseWords.length > 0) {
-    warningGroups.formatting.push(
+    warningGroups.content.push(
       `The following words are in all caps: ${uppercaseWords.join(
         ", "
       )} which could potentially lead to carrier filtering.`
