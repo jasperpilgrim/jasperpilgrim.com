@@ -177,7 +177,7 @@ smsContent.addEventListener("input", () => {
       warnings.innerHTML += `
             <div class="warning-group">
               <h3 class="warning-group-title">${group.charAt(0).toUpperCase() + group.slice(1)
-        }:</h3>
+        }</h3>
               ${warningGroups[group]
           .map((warning) => `<p class="warning">${warning}</p>`)
           .join("")}
