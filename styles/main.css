@@ -56,6 +56,10 @@ nav li {
 	font-size: 1.1em;
 }
 
+.project-list p {
+	margin-top: 0;
+}
+
 pre {
   tab-size: 2;
 }
