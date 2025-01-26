@@ -61,13 +61,12 @@ pre {
 }
 
 .error-404-message {
-	margin-top: 1em;
 	text-align: center;
 	font-style: italic;
 }
 
 .error-404 {
-	font-size: 2em;
+	font-size: 1.2em;
 	font-weight: bold;
 	color: #FF5555;
 }
