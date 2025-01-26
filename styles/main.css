@@ -7,6 +7,10 @@ body {
 	font-family: "Source Sans 3";
 }
 
+body p {
+	text-align: justify;
+}
+
 a {
 	text-decoration: none;
 	color: #FD78C5;
