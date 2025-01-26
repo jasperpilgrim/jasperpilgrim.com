@@ -60,6 +60,18 @@ pre {
   tab-size: 2;
 }
 
+.error-404-message {
+	margin-top: 1em;
+	text-align: center;
+	font-style: italic;
+}
+
+.error-404 {
+	font-size: 7em;
+	font-weight: bold;
+	color: #FF5555;
+}
+
 /* mobile + smaller screens */
 @media (max-width: 600px) {
 	.container {
