@@ -193,5 +193,5 @@ smsContent.addEventListener("input", () => {
     optimizedContentDiv.id = 'optimizedContent';
     charCount.parentNode.insertBefore(optimizedContentDiv, charCount.nextSibling);
   }
-  optimizedContentDiv.innerHTML = `<p>Optimized Content: ${optimizedContent}</p>`;
+  optimizedContentDiv.innerHTML = `<p><span style="color: #8BE9FD;">Optimized Content:</span> ${optimizedContent}</p>`;
 });
