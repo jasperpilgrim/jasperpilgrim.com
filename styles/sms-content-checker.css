@@ -14,6 +14,16 @@ h1 {
   font-size: 16px;
 }
 
+.optimized-content {
+  cursor: pointer;
+  border-right: 1px solid #50FA7B;
+  padding: 5px;
+}
+
+.optimized-content:hover {
+  background-color: #383A47;
+}
+
 .input-wrapper {
   display: flex;
   flex-direction: column;

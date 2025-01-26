@@ -110,7 +110,7 @@ smsContent.addEventListener("input", () => {
 
   // @ Symbol and URL check
   const urlRegex = /(?:https?:\/\/)?(?:www\.)?[a-zA-Z0-9-]+(?:\.[a-zA-Z]{2,})+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=]*\/?/gi;
-  const emailRegex = /\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}\b/g; 
+  const emailRegex = /\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}\b/g;
 
   if (urlRegex.test(content) || emailRegex.test(content)) {
     warningGroups.content.push(
@@ -118,7 +118,7 @@ smsContent.addEventListener("input", () => {
     );
 
     // Highlight email addresses first
-    optimizedContent = optimizedContent.replace(emailRegex, (match) => `<span style="color: #FF5555;">${match}</span>`); 
+    optimizedContent = optimizedContent.replace(emailRegex, (match) => `<span style="color: #FF5555;">${match}</span>`);
 
     // Then highlight URLs 
     optimizedContent = optimizedContent.replace(urlRegex, '<span style="color: #FF5555;">$&</span>');
@@ -186,12 +186,26 @@ smsContent.addEventListener("input", () => {
     }
   }
 
-  // Display the optimized content
+  // Display the optimized content + click-to-copy functionality
   let optimizedContentDiv = document.getElementById('optimizedContent');
   if (!optimizedContentDiv) {
     optimizedContentDiv = document.createElement('div');
     optimizedContentDiv.id = 'optimizedContent';
     charCount.parentNode.insertBefore(optimizedContentDiv, charCount.nextSibling);
   }
-  optimizedContentDiv.innerHTML = `<p><span style="color: #8BE9FD;">Optimized Content:</span> ${optimizedContent}</p>`;
+
+  optimizedContentDiv.innerHTML = `<p class="optimized-content"><span style="color: #8BE9FD;">Optimized Content:</span> <span id="optimizedContentText">${optimizedContent}</span></p>`;
+
+  const optimizedContentText = document.getElementById('optimizedContentText');
+  optimizedContentText.addEventListener('click', () => {
+    const textToCopy = optimizedContentText.textContent;
+    navigator.clipboard.writeText(textToCopy)
+      .then(() => {
+        const originalHTML = optimizedContentText.innerHTML;
+        optimizedContentText.innerHTML = 'Copied!';
+        setTimeout(() => {
+          optimizedContentText.innerHTML = originalHTML;
+        }, 1000);
+      });
+  });
 });
