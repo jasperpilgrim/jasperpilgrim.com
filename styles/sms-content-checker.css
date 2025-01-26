@@ -16,8 +16,10 @@ h1 {
 
 .optimized-content {
   cursor: pointer;
-  border-right: 1px solid #50FA7B;
+  border-top: 1px solid #50FA7B;
+  border-bottom: 1px solid #50FA7B;
   padding: 5px;
+  width: 94%;
 }
 
 .optimized-content:hover {
