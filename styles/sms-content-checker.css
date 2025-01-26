@@ -21,6 +21,7 @@ h1, h2 {
   border-bottom: 1px solid #50FA7B;
   padding: 5px;
   width: 94%;
+  margin-top: 0;
 }
 
 .optimized-content:hover {
@@ -44,6 +45,7 @@ h1, h2 {
 .warning {
   color: #FF5555;
   font-size: 16px;
+  margin-top: 0;
   margin-bottom: 5px;
 }
 
