@@ -62,6 +62,7 @@ pre {
 
 .error-404-message {
 	font-style: italic;
+	margin: auto;
 }
 
 .error-404 {
