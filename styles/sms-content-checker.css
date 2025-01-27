@@ -49,6 +49,11 @@ h1, h2 {
   margin-bottom: 5px;
 }
 
+.warning::before {
+  content: "- ";
+  color: #8BE9FD;
+}
+
 /* Row layout */
 #warnings {
   display: flex;
