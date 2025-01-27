@@ -74,6 +74,10 @@ pre {
 	color: #FF5555;
 }
 
+.cherryblossoms {
+	border-radius: 15px;
+}
+
 /* mobile + smaller screens */
 @media (max-width: 600px) {
 	.container {
@@ -89,8 +93,4 @@ pre {
     display: block;
     margin: 10px 0;
   }
-}
-
-.cherryblossoms {
-	border-radius: 15px;
 }
