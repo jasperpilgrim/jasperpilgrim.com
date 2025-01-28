@@ -5,12 +5,13 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>SMS Content Checker | Jasper Pilgrim</title>
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.fluid.classless.min.css">
 	<link rel="stylesheet" href="/styles/main.css">
 	<link rel="stylesheet" href="/styles/sms-content-checker.css">
 </head>
 
 <body>
-	<div class="container">
+	<header>
 		<nav>
 			<ul>
 				<li><a href="/">[Home]</a></li>
@@ -19,18 +20,19 @@
 				<li><a href="/contact/">[Contact]</a></li>
 			</ul>
 		</nav>
+	</header>
+	<main>
 		<h1>SMS Content Checker</h1>
-		<div class="input-wrapper">
-			<textarea id="smsContent" placeholder="Enter your SMS content here"></textarea>
-			<div id="charCount">0/160</div>
+		<div class="textarea-container">
+			<textarea id="smsContent" rows="6" cols="80" placeholder="Enter your SMS content here"></textarea>
+			<div id="charCount"><span>0/160</span></div>
 		</div>
 		<h2>Optimized Content</h2>
 		<div id="optimizedContent"></div>
 		<h2>Warnings</h2>
 		<div id="warnings"></div>
-
 		<script type="module" src="script.js"></script>
-	</div>
+	</main>
 </body>
 
 </html>

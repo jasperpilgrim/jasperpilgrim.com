@@ -118,10 +118,10 @@ smsContent.addEventListener("input", () => {
     );
 
     // Highlight email addresses first
-    optimizedContent = optimizedContent.replace(emailRegex, (match) => `<span style="color: #FF5555;">${match}</span>`);
+    optimizedContent = optimizedContent.replace(emailRegex, (match) => `<span style="color: #FFB86C;">${match}</span>`);
 
     // Then highlight URLs 
-    optimizedContent = optimizedContent.replace(urlRegex, '<span style="color: #FF5555;">$&</span>');
+    optimizedContent = optimizedContent.replace(urlRegex, '<span style="color: #FFB86C;">$&</span>');
   }
 
   // Replace standalone '@' symbols with 'at'
