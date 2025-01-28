@@ -197,7 +197,7 @@ smsContent.addEventListener("input", () => {
     charCount.parentNode.insertBefore(optimizedContentDiv, charCount.nextSibling);
   }
 
-  optimizedContentDiv.innerHTML = `<p class="optimized-content"><span id="optimizedContentText">${optimizedContent}</span></p>`;
+  optimizedContentDiv.innerHTML = `<p class="optimized-content"><span id="optimizedContentText"><blockquote>${optimizedContent}</blockquote></span></p>`;
 
   const optimizedContentText = document.getElementById('optimizedContentText');
   optimizedContentText.addEventListener('click', () => {
