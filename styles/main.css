@@ -18,7 +18,6 @@ html {
 
 body {
 	color: var(--dracula-foreground);
-	font-family: sans-serif;
 }
 
 header {
@@ -30,8 +29,6 @@ main {
 	display: flex;
 	flex-direction: column;
 	align-items: center;
-	/* min-height: 100vh;
-  max-width: 100vw; */
 }
 
 a {
