@@ -7,6 +7,18 @@
   align-self: flex-end;
 }
 
+h3 {
+  font-style: italic;
+}
+
+#heading-optimizedContent {
+  color: var(--dracula-green);
+}
+
+#heading-warnings {
+  color: var(--dracula-orange);
+}
+
 #warnings {
   display: flex;
   flex-direction: grow;
