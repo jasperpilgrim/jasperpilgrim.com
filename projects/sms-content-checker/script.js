@@ -150,18 +150,20 @@ smsContent.addEventListener("input", () => {
   }
 
   // Uppercase word check
-  const words = content.split(/\s+/).filter((word) => !emojiRegex().test(word));
-  const uppercaseWords = [
-    ...new Set(
-      words.filter(
-        (word) =>
-          /^[A-Z]+$/.test(word) &&
-          word.length > 1 &&
-          !wordsToAvoid.includes(word.toLowerCase()) &&
-          !phrasesToAvoid.includes(word.toLowerCase())
-      )
-    )
-  ];
+  const words = content.split(/(?=[^a-zA-Z0-9])|(?<=[^a-zA-Z0-9])/).filter((word) => !emojiRegex().test(word));
+  const uppercaseWords = words.filter(
+    (word) =>
+      /^[A-Z]+$/.test(word) &&
+      word.length > 1 &&
+      !wordsToAvoid.includes(word) &&
+      !phrasesToAvoid.includes(word)
+  );
+
+  if (uppercaseWords.length > 0) {
+    uppercaseWords.forEach((word) => {
+      optimizedContent = optimizedContent.replace(new RegExp(`\\b${word}\\b`, 'g'), word.toLowerCase());
+    });
+  }
 
   if (uppercaseWords.length > 0) {
     warningGroups.content.push(
