@@ -7,10 +7,6 @@
   align-self: flex-end;
 }
 
-h3 {
-  color: var(--dracula-red);
-}
-
 #warnings {
   display: flex;
   flex-direction: grow;
