@@ -12,10 +12,6 @@
   flex-direction: grow;
 }
 
-#warnings p {
-  color: var(--dracula-orange);
-}
-
 .warning-group {
   flex: 1;
 }
