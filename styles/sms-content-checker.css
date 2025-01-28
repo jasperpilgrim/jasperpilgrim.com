@@ -1,7 +1,3 @@
-main * {
-  font-size: 0.9rem;
-}
-
 .textarea-container {
   display: flex;
   flex-direction: column;
