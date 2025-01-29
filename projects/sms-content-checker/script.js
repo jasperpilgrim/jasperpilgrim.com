@@ -201,7 +201,7 @@ smsContent.addEventListener("input", () => {
   }
 
   optimizedContentDiv.innerHTML = `
-      <blockquote>${optimizedContent}</blockquote>
+      <h2 id="heading-optimizedContent">Optimized Content</h2><blockquote>${optimizedContent}</blockquote>
       `;
 
 });

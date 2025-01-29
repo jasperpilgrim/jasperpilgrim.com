@@ -7,16 +7,23 @@
   align-self: flex-end;
 }
 
-h3 {
-  font-style: italic;
-}
-
 #heading-optimizedContent {
   color: var(--dracula-green);
 }
 
 #heading-warnings {
   color: var(--dracula-orange);
+}
+
+h3 {
+  font-style: italic;
+}
+
+#optimizedContent {
+  margin-top: 10px;
+  padding: 10px;
+  white-space: pre-wrap;
+  word-wrap: break-word;
 }
 
 #warnings {
@@ -33,6 +40,6 @@ h3 {
 }
 
 .warning::before {
-  content: "⚠️"; 
+  content: "⚠️";
   margin-right: 0.5rem;
 }
