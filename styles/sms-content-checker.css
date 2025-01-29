@@ -24,6 +24,15 @@ h3 {
   flex-direction: grow;
 }
 
+#warnings ul li {
+  list-style: none;
+}
+
 .warning-group {
   flex: 1;
+}
+
+.warning::before {
+  content: "⚠️"; 
+  margin-right: 0.5rem;
 }
