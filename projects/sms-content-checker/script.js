@@ -61,7 +61,7 @@ smsContent.addEventListener("input", () => {
     );
   }
 
-  // Character count with highlighting and dynamic limit
+  // Character count
   const currentLength = content.length;
   charCount.innerHTML = `
       <span style="${currentLength > charLimit ? "color: #FF5555; font-weight: bold;" : ""
@@ -189,26 +189,19 @@ smsContent.addEventListener("input", () => {
     }
   }
 
-  // Display the optimized content + click-to-copy functionality
+  // Display optimized content
   let optimizedContentDiv = document.getElementById('optimizedContent');
   if (!optimizedContentDiv) {
     optimizedContentDiv = document.createElement('div');
     optimizedContentDiv.id = 'optimizedContent';
-    charCount.parentNode.insertBefore(optimizedContentDiv, charCount.nextSibling);
+    charCount.parentNode.insertBefore(
+      optimizedContentDiv,
+      charCount.nextSibling,
+    );
   }
 
-  optimizedContentDiv.innerHTML = `<p class="optimized-content"><span id="optimizedContentText"><blockquote>${optimizedContent}</blockquote></span></p>`;
+  optimizedContentDiv.innerHTML = `
+      <blockquote>${optimizedContent}</blockquote>
+      `;
 
-  const optimizedContentText = document.getElementById('optimizedContentText');
-  optimizedContentText.addEventListener('click', () => {
-    const textToCopy = optimizedContentText.textContent;
-    navigator.clipboard.writeText(textToCopy)
-      .then(() => {
-        const originalHTML = optimizedContentText.innerHTML;
-        optimizedContentText.innerHTML = 'Copied!';
-        setTimeout(() => {
-          optimizedContentText.innerHTML = originalHTML;
-        }, 1000);
-      });
-  });
 });
