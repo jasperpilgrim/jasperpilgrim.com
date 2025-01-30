@@ -200,8 +200,11 @@ smsContent.addEventListener("input", () => {
     );
   }
 
-  optimizedContentDiv.innerHTML = `
-      <h2 id="heading-optimizedContent">Optimized Content</h2><blockquote>${optimizedContent}</blockquote>
-      `;
-
+  if (optimizedContent !== content) {
+    optimizedContentDiv.innerHTML = `
+        <h2 id="heading-optimizedContent">Optimized Content</h2><blockquote>${optimizedContent}</blockquote>
+        `;
+  } else {
+    optimizedContentDiv.innerHTML = '';
+  }
 });
