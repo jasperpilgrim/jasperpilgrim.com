@@ -15,7 +15,6 @@ blockquote {
   margin-top: 10px;
   padding: 10px;
   white-space: pre-wrap;
-  word-wrap: break-word;
 }
 
 #heading-warnings {
