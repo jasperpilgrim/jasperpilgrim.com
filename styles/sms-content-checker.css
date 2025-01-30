@@ -9,6 +9,7 @@
 
 #heading-optimizedContent {
   color: var(--dracula-green);
+  text-align: center;
 }
 
 blockquote {
