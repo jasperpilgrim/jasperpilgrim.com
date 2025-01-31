@@ -6,38 +6,14 @@ const charCount = document.getElementById("charCount");
 const optimizedContentDiv = document.getElementById("optimizedContent");
 
 const wordsToAvoid = [
-  "cocaine",
-  "kush",
-  "ganja",
-  "weed",
-  "pot",
-  "reefer",
-  "pcp",
-  "marijuana",
-  "dope",
-  "acid",
-  "thc",
-  "cash",
-  "bonus",
-  "spam",
-  "deal",
-  "free",
-  "guaranteed",
-  "urgent",
-  "benjamins",
-  "exclusive"
+  "cocaine", "kush", "ganja", "weed", "pot", "reefer", "pcp", "marijuana",
+  "dope", "acid", "thc", "cash", "bonus", "spam", "deal", "free",
+  "guaranteed", "urgent", "benjamins", "exclusive"
 ];
 
 const phrasesToAvoid = [
-  "apply now",
-  "take action",
-  "act now",
-  "limited time",
-  "call now",
-  "no strings attached",
-  "no credit check",
-  "hey there",
-  "hi there"
+  "apply now", "take action", "act now", "limited time", "call now",
+  "no strings attached", "no credit check", "hey there", "hi there"
 ];
 
 function checkCharacterLimit(content) {
@@ -53,16 +29,16 @@ function checkCharacterLimit(content) {
 
 function checkDollarSigns(content) {
   const dollarSignCount = (content.match(/\$/g) || []).length;
-  return dollarSignCount > 0 ? `Dollar signs ($) are not recommended. Consider alternatives like 'USD' or 'CAN'.` : null;
+  return dollarSignCount > 0? `Dollar signs ($) are not recommended. Consider alternatives like 'USD' or 'CAN'.`: null;
 }
 
 function checkEmojis(content) {
-  return emojiRegex().test(content) ? `Emojis can inadvertently lead to carrier filtering.` : null;
+  return emojiRegex().test(content)? `Emojis can inadvertently lead to carrier filtering.`: null;
 }
 
 function checkExclamationPoints(content) {
   const exclamationCount = (content.match(/!/g) || []).length;
-  return exclamationCount > 1 ? `Limit the use of exclamation points to once per message.` : null;
+  return exclamationCount > 1? `Limit the use of exclamation points to once per message.`: null;
 }
 
 function checkUrlsAndEmails(content) {
@@ -79,29 +55,28 @@ function checkBannedWordsAndPhrases(content) {
   const flagged = [];
   const check = (arr) => {
     for (const item of arr) {
-      const regex = new RegExp(`\\b${item}\\b`, "gi"); // Case-insensitive
-      if (regex.test(content) && !flagged.includes(item)) {
+      const regex = new RegExp(`\\b${item}\\b`, "gi");
+      if (regex.test(content) &&!flagged.includes(item)) {
         flagged.push(item);
       }
     }
   };
   check(wordsToAvoid);
   check(phrasesToAvoid);
-  return flagged.length > 0 ? `The following words or phrases are not recommended for SMS: "${flagged.join(", ")}".` : null;
+  return flagged.length > 0? `The following words or phrases are not recommended for SMS: "${flagged.join(", ")}".`: null;
 }
 
 function checkUppercaseWords(content) {
-  const words = content.split(/(?=[^a-zA-Z0-9])|(?<=[^a-zA-Z0-9])/).filter((word) => !emojiRegex().test(word));
-  const uppercaseWords = words.filter(word => /^[A-Z]+$/.test(word) && word.length > 1 && !wordsToAvoid.includes(word) && !phrasesToAvoid.includes(word));
-  return uppercaseWords.length > 0 ? `The following words are in all caps: ${uppercaseWords.join(", ")} which could potentially lead to carrier filtering.` : null;
+  const words = content.split(/(?=[^a-zA-Z0-9])|(?<=[^a-zA-Z0-9])/).filter((word) =>!emojiRegex().test(word));
+  const uppercaseWords = words.filter(word => /^[A-Z]+$/.test(word) && word.length > 1 &&!wordsToAvoid.includes(word) &&!phrasesToAvoid.includes(word));
+  return uppercaseWords.length > 0? `The following words are in all caps: ${uppercaseWords.join(", ")} which could potentially lead to carrier filtering.`: null;
 }
-
 
 function optimizeContent(content) {
   let optimized = content;
   optimized = optimized.replace(emojiRegex(), "");
   optimized = optimized.replace(/!!+/g, "!");
-  optimized = optimized.replace(/!/g, (match, offset, string) => offset === string.indexOf("!") ? "!" : ".");
+  optimized = optimized.replace(/!/g, (match, offset, string) => offset === string.indexOf("!")? "!": ".");
   optimized = optimized.replace(/(^|\s)@(\s|$)/g, '$1at$2');
 
   const urlRegex = /(?:https?:\/\/)?(?:www\.)?[a-zA-Z0-9-]+(?:\.[a-zA-Z]{2,})+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=]*\/?/gi;
@@ -109,8 +84,8 @@ function optimizeContent(content) {
   optimized = optimized.replace(emailRegex, (match) => `<span class="highlighted-text">${match}</span>`);
   optimized = optimized.replace(urlRegex, '<span class="highlighted-text">$&</span>');
 
-  const words = content.split(/(?=[^a-zA-Z0-9])|(?<=[^a-zA-Z0-9])/).filter((word) => !emojiRegex().test(word));
-  const uppercaseWords = words.filter(word => /^[A-Z]+$/.test(word) && word.length > 1 && !wordsToAvoid.includes(word) && !phrasesToAvoid.includes(word));
+  const words = content.split(/(?=[^a-zA-Z0-9])|(?<=[^a-zA-Z0-9])/).filter((word) =>!emojiRegex().test(word));
+  const uppercaseWords = words.filter(word => /^[A-Z]+$/.test(word) && word.length > 1 &&!wordsToAvoid.includes(word) &&!phrasesToAvoid.includes(word));
   uppercaseWords.forEach((word) => {
     optimized = optimized.replace(new RegExp(`\\b${word}\\b`, 'g'), word.toLowerCase());
   });
@@ -118,21 +93,19 @@ function optimizeContent(content) {
   return optimized;
 }
 
-
-
 smsContent.addEventListener("input", () => {
   warnings.innerHTML = "";
   const content = smsContent.value.trim();
-  const warningGroups = { length: [], content: [] };
+  const allWarnings = [];
 
   const { limit, warning: lengthWarning } = checkCharacterLimit(content);
-  if (lengthWarning) warningGroups.length.push(lengthWarning);
+  if (lengthWarning) allWarnings.push(lengthWarning);
 
   const currentLength = content.length;
-  charCount.innerHTML = `<span style="${currentLength > limit ? "color: #FF5555; font-weight: bold;" : ""}">${currentLength}</span>/${limit}`;
+  charCount.innerHTML = `<span style="${currentLength > limit? "color: #FF5555; font-weight: bold;": ""}">${currentLength}</span>/${limit}`;
 
   if (content.length > limit) {
-    warningGroups.length.push(`Your message exceeds the character limit (${limit}).`);
+    allWarnings.push(`Your message exceeds the character limit (${limit}).`);
   }
 
   let optimizedContent = optimizeContent(content);
@@ -144,21 +117,15 @@ smsContent.addEventListener("input", () => {
     checkUrlsAndEmails(content),
     checkBannedWordsAndPhrases(content),
     checkUppercaseWords(content),
-  ].filter(Boolean); // Remove nulls
+  ].filter(Boolean);
 
-  warningGroups.content.push(...contentWarnings);
+  allWarnings.push(...contentWarnings);
 
-  for (const group in warningGroups) {
-    if (warningGroups[group].length > 0) {
-      warnings.innerHTML += `
-        <div class="warning-group">
-          <h3 class="warning-group-title">${group.charAt(0).toUpperCase() + group.slice(1)}</h3>
-          <ul>${warningGroups[group].map(warning => `<li class="warning">${warning}</li>`).join("")}</ul>
-        </div>`;
-    }
+  if (allWarnings.length > 0) {
+    warnings.innerHTML = "<ul>" + allWarnings.map(warning => `<li class="warning">${warning}</li>`).join("") + "</ul>";
   }
 
-  if (optimizedContent !== content) {
+  if (optimizedContent!== content) {
     optimizedContentDiv.innerHTML = `<h2 id="heading-optimizedContent">Optimized Content</h2><blockquote>${optimizedContent}</blockquote>`;
   } else {
     optimizedContentDiv.innerHTML = '';
