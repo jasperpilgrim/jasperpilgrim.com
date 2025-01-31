@@ -14,23 +14,10 @@
 
 html {
 	background-color: var(--dracula-background);
-	font-size: 0.9rem;
 }
 
 body {
 	color: var(--dracula-foreground);
-}
-
-header {
-	display: flex;
-	justify-content: flex-end;
-	font-size: initial;
-}
-
-main {
-	display: flex;
-	flex-direction: column;
-	align-items: center;
 }
 
 a {

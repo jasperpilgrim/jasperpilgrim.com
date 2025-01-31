@@ -1,37 +1,11 @@
-.textarea-container {
-  display: flex;
-  flex-direction: column;
-}
-
-#charCount {
-  align-self: flex-end;
-}
-
-#heading-optimizedContent {
-  color: var(--dracula-green);
-  text-align: center;
-}
-
 blockquote {
   margin-top: 10px;
   padding: 10px;
   white-space: pre-wrap;
 }
 
-#heading-warnings {
-  color: var(--dracula-orange);
-}
-
-h3 {
-  font-style: italic;
-}
-
-#warnings ul li {
+.warning {
   list-style: none;
-}
-
-.warning-group {
-  flex: 1;
 }
 
 .warning::before {
