@@ -4,6 +4,10 @@ blockquote {
   white-space: pre-wrap;
 }
 
+.highlighted-text {
+  color: var(--dracula-orange);
+}
+
 .warning {
   list-style: none;
 }
