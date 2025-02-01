@@ -20,6 +20,8 @@
 blockquote {
   margin-top: 10px;
   padding: 10px;
+  max-width: 84ch;
+  font-family: monospace;
   white-space: pre-wrap;
 }
 
