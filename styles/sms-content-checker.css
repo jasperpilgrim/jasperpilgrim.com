@@ -28,7 +28,7 @@ h1 {
 #optimizedContent blockquote {
   margin-top: 10px;
   padding: 10px;
-  /* max-width: 84ch; */
+  max-width: 84ch;
   white-space: pre-wrap;
 }
 
