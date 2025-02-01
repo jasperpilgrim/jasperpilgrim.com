@@ -1,5 +1,6 @@
 .sms-input {
 	max-width: 50rem;
+  font-family: monospace;
 }
 
 #charCount {
