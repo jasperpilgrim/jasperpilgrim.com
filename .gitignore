@@ -1,2 +1,5 @@
 # macOS
 .DS_Store
+
+# SMS Content Checker
+/projects/sms-content-checker/tests.js
