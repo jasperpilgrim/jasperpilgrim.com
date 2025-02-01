@@ -4,6 +4,10 @@ h1 {
 
 .sms-input {
 	max-width: 50rem;
+}
+
+#smsContent, #optimizedContent, .warning {
+  font-size: 0.9rem;
   font-family: monospace;
 }
 
@@ -26,7 +30,6 @@ h1 {
   margin-top: 10px;
   padding: 10px;
   max-width: 84ch;
-  font-family: monospace;
   white-space: pre-wrap;
 }
 
