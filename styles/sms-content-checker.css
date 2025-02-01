@@ -1,3 +1,7 @@
+.sms-input {
+	max-width: 50rem;
+}
+
 #charCount {
   display: block;
   text-align: right;
