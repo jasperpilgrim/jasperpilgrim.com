@@ -1,3 +1,17 @@
+#charCount {
+  display: inline-block;
+}
+
+#charLength,
+#charLimit,
+#segmentCount {
+  display: inline;
+}
+
+#segmentCount {
+  margin-left: 5px;
+}
+
 blockquote {
   margin-top: 10px;
   padding: 10px;

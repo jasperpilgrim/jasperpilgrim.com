@@ -2,7 +2,6 @@ import emojiRegex from "https://esm.sh/emoji-regex";
 
 const smsContent = document.getElementById("smsContent");
 const warnings = document.getElementById("warnings");
-const charCount = document.getElementById("charCount");
 const optimizedContentDiv = document.getElementById("optimizedContent");
 
 const wordsToAvoid = [
@@ -16,19 +15,25 @@ const phrasesToAvoid = [
   "no strings attached", "no credit check", "hey there", "hi there"
 ];
 
+const charLengthLimitSpan = document.getElementById("charLengthLimit");
+const segmentCountSpan = document.getElementById("segmentCount");
+
 function checkCharacterLimit(content) {
   let charLimit = 160;
   let ucs2Chars = "";
   if (/[^\x00-\x7F\n\r]/.test(content)) {
     charLimit = 70;
     ucs2Chars = content.match(/[^\x00-\x7F\n\r]/g).join("");
-    return { limit: charLimit, warning: `Your message contains characters that require UCS-2 encoding (${ucs2Chars}), which reduces the character limit from 160 to 70.` };
+    return {
+      limit: charLimit,
+      warning: `Your message contains characters that require UCS-2 encoding (${ucs2Chars}), which reduces the character limit from 160 to 70.`
+    };
   }
   return { limit: charLimit, warning: null };
 }
 
 function checkDollarSigns(content) {
-  const dollarSignCount = (content.match(/\$/g) || []).length;
+  const dollarSignCount = content.match(/\$/g)? content.match(/\$/g).length: 0;
   return dollarSignCount > 0? `Dollar signs ($) are not recommended. Consider alternatives like 'USD' or 'CAN'.`: null;
 }
 
@@ -37,7 +42,7 @@ function checkEmojis(content) {
 }
 
 function checkExclamationPoints(content) {
-  const exclamationCount = (content.match(/!/g) || []).length;
+  const exclamationCount = content.match(/!/g)? content.match(/!/g).length: 0;
   return exclamationCount > 1? `Limit the use of exclamation points to once per message.`: null;
 }
 
@@ -93,6 +98,10 @@ function optimizeContent(content) {
   return optimized;
 }
 
+window.addEventListener('DOMContentLoaded', (event) => {
+  segmentCountSpan.textContent = "(0)";
+});
+
 smsContent.addEventListener("input", () => {
   warnings.innerHTML = "";
   const content = smsContent.value.trim();
@@ -102,7 +111,12 @@ smsContent.addEventListener("input", () => {
   if (lengthWarning) allWarnings.push(lengthWarning);
 
   const currentLength = content.length;
-  charCount.innerHTML = `<span style="${currentLength > limit? "color: #FF5555; font-weight: bold;": ""}">${currentLength}</span>/${limit}`;
+  const charLengthStyle = currentLength > limit? "color: #FF5555; font-weight: bold;": "";
+  charLengthLimitSpan.style.cssText = "";
+  charLengthLimitSpan.innerHTML = `<span style="${charLengthStyle}">${currentLength}</span>/${limit}`;
+  const segmentLength = limit === 70? 67: 153;
+  const segmentCount = Math.ceil(currentLength / segmentLength);
+  segmentCountSpan.textContent = `(${segmentCount})`;
 
   if (content.length > limit) {
     allWarnings.push(`Your message exceeds the character limit (${limit}).`);
