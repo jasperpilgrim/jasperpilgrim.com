@@ -14,7 +14,7 @@
 
 html {
 	background-color: var(--dracula-background);
-	/* font-size: 0.95rem; */
+	font-size: 1rem;
 }
 
 h1 {
