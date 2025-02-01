@@ -114,6 +114,7 @@ smsContent.addEventListener("input", () => {
   const charLengthStyle = currentLength > limit? "color: #FF5555; font-weight: bold;": "";
   charLengthLimitSpan.style.cssText = "";
   charLengthLimitSpan.innerHTML = `<span style="${charLengthStyle}">${currentLength}</span>/${limit}`;
+
   const segmentLength = limit === 70? 67: 153;
   const segmentCount = Math.ceil(currentLength / segmentLength);
   segmentCountSpan.textContent = `(${segmentCount})`;
@@ -140,7 +141,7 @@ smsContent.addEventListener("input", () => {
   }
 
   if (optimizedContent!== content) {
-    optimizedContentDiv.innerHTML = `<h2 id="heading-optimizedContent">Optimized Content</h2><blockquote>${optimizedContent}</blockquote>`;
+    optimizedContentDiv.innerHTML = `<blockquote>${optimizedContent}</blockquote>`;
   } else {
     optimizedContentDiv.innerHTML = '';
   }
