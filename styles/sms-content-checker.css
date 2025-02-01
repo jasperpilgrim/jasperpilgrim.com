@@ -6,14 +6,15 @@ h1 {
 	max-width: 50rem;
 }
 
-#smsContent, #optimizedContent, .warning {
-  font-size: 0.9rem;
+#smsContent, #optimizedContent {
+  font-size: 0.7rem;
   font-family: monospace;
 }
 
 #charCount {
   display: block;
   text-align: right;
+  font-size: 0.7rem;
 }
 
 #charLength,
@@ -39,6 +40,7 @@ h1 {
 
 .warning {
   list-style: none;
+  font-size: 0.7rem;
 }
 
 .warning::before {
