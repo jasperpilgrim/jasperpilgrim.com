@@ -17,10 +17,6 @@ html {
 	font-size: 1rem;
 }
 
-h1 {
-	text-align: center;
-}
-
 body {
 	color: var(--dracula-foreground);
 }
