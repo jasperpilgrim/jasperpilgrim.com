@@ -41,6 +41,6 @@
   margin-right: 0.5rem;
 }
 
-.warning strong {
+.warning .warning-type {
   color: var(--dracula-red);
 }
