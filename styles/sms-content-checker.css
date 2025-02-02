@@ -1,15 +1,19 @@
-.sms-input {
-	max-width: 50rem;
+.sms-content-input, .sms-content-output {
+  max-width: 50rem;
 }
 
-#smsContent, #optimizedContent {
+#smsContentInput,
+#smsContentOutput {
   font-family: monospace;
   font-size: 0.9rem;
+  resize: none;
 }
 
 #charCount {
   display: block;
   text-align: right;
+  font-size: 0.9rem;
+  margin-top: -15px;
 }
 
 #charLength,
@@ -20,13 +24,6 @@
 
 #segmentCount {
   margin-left: 5px;
-}
-
-#optimizedContent blockquote {
-  margin-top: 10px;
-  padding: 10px;
-  max-width: 84ch;
-  white-space: pre-wrap;
 }
 
 .highlighted-text {
@@ -41,4 +38,8 @@
 .warning::before {
   content: "⚠️";
   margin-right: 0.5rem;
+}
+
+.warning strong {
+  color: var(--dracula-red);
 }

@@ -1,8 +1,9 @@
 import emojiRegex from "https://esm.sh/emoji-regex";
 
-const smsContent = document.getElementById("smsContent");
-const warnings = document.getElementById("warnings");
-const optimizedContentDiv = document.getElementById("optimizedContent");
+const smsContentInput = document.getElementById("smsContentInput");
+const smsContentWarnings = document.getElementById("smsContentWarnings");
+const messageOutputDiv = document.querySelector(".sms-content-output");
+const smsContentOutput = document.getElementById("smsContentOutput");
 
 const wordsToAvoid = [
   "cocaine", "kush", "ganja", "weed", "pot", "reefer", "pcp", "marijuana",
@@ -18,32 +19,40 @@ const phrasesToAvoid = [
 const charLengthLimitSpan = document.getElementById("charLengthLimit");
 const segmentCountSpan = document.getElementById("segmentCount");
 
+const warningMessages = {
+  characterLimit: "<strong>Character Limit:</strong> Special characters reduce the message limit to 70.",
+  characterLimitExceeded: "<strong>Character Limit:</strong> Message exceeds the {limit} character limit.",
+  dollarSigns: "<strong>Dollar Signs:</strong> Consider using 'USD' or 'CAN' instead of dollar signs.",
+  emojis: "<strong>Emojis:</strong> Using emojis may cause issues with carrier filtering.",
+  exclamationPoints: "<strong>Exclamation Points:</strong> It is recommended to limit exclamation points to one per message.",
+  urlsAndAtSymbols: "<strong>URLs and @ Symbols:</strong> It is recommended to avoid \"at\" symbols and URLs.",
+  wordsToAvoid: "<strong>Words to Avoid:</strong> It is not recommended to use these words or phrases (",
+  uppercaseWords: "<strong>Uppercase Words:</strong> It is not recommended to use all caps (",
+};
+
 function checkCharacterLimit(content) {
   let charLimit = 160;
   let ucs2Chars = "";
   if (/[^\x00-\x7F\n\r]/.test(content)) {
     charLimit = 70;
     ucs2Chars = content.match(/[^\x00-\x7F\n\r]/g).join("");
-    return {
-      limit: charLimit,
-      warning: `Your message contains characters that require UCS-2 encoding (${ucs2Chars}), which reduces the character limit from 160 to 70.`
-    };
+    return { limit: charLimit, warning: warningMessages.characterLimit };
   }
   return { limit: charLimit, warning: null };
 }
 
 function checkDollarSigns(content) {
   const dollarSignCount = content.match(/\$/g)? content.match(/\$/g).length: 0;
-  return dollarSignCount > 0? `Dollar signs ($) are not recommended. Consider alternatives like 'USD' or 'CAN'.`: null;
+  return dollarSignCount > 0? warningMessages.dollarSigns: null;
 }
 
 function checkEmojis(content) {
-  return emojiRegex().test(content)? `Emojis can inadvertently lead to carrier filtering.`: null;
+  return emojiRegex().test(content)? warningMessages.emojis: null;
 }
 
 function checkExclamationPoints(content) {
   const exclamationCount = content.match(/!/g)? content.match(/!/g).length: 0;
-  return exclamationCount > 1? `Limit the use of exclamation points to once per message.`: null;
+  return exclamationCount > 1? warningMessages.exclamationPoints: null;
 }
 
 function checkUrlsAndEmails(content) {
@@ -51,12 +60,12 @@ function checkUrlsAndEmails(content) {
   const emailRegex = /\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}\b/gi;
 
   if (urlRegex.test(content) || emailRegex.test(content) || content.includes("@")) {
-    return `"At" symbols (@) and URLs could potentially lead to carrier filtering.`;
+    return warningMessages.urlsAndAtSymbols;
   }
   return null;
 }
 
-function checkBannedWordsAndPhrases(content) {
+function checkWordsAndPhrasesToAvoid(content) {
   const flagged = [];
   const check = (arr) => {
     for (const item of arr) {
@@ -68,26 +77,21 @@ function checkBannedWordsAndPhrases(content) {
   };
   check(wordsToAvoid);
   check(phrasesToAvoid);
-  return flagged.length > 0? `The following words or phrases are not recommended for SMS: "${flagged.join(", ")}".`: null;
+  return flagged.length > 0? `${warningMessages.wordsToAvoid}${flagged.join(", ")}).`: null;
 }
 
 function checkUppercaseWords(content) {
   const words = content.split(/(?=[^a-zA-Z0-9])|(?<=[^a-zA-Z0-9])/).filter((word) =>!emojiRegex().test(word));
   const uppercaseWords = words.filter(word => /^[A-Z]+$/.test(word) && word.length > 1 &&!wordsToAvoid.includes(word) &&!phrasesToAvoid.includes(word));
-  return uppercaseWords.length > 0? `The following words are in all caps: ${uppercaseWords.join(", ")} which could potentially lead to carrier filtering.`: null;
+  return uppercaseWords.length > 0? `${warningMessages.uppercaseWords}${uppercaseWords.join(", ")}).`: null;
 }
 
-function optimizeContent(content) {
+function generateSmsContentOutput(content) {
   let optimized = content;
   optimized = optimized.replace(emojiRegex(), "");
   optimized = optimized.replace(/!!+/g, "!");
   optimized = optimized.replace(/!/g, (match, offset, string) => offset === string.indexOf("!")? "!": ".");
   optimized = optimized.replace(/(^|\s)@(\s|$)/g, '$1at$2');
-
-  const urlRegex = /(?:https?:\/\/)?(?:www\.)?[a-zA-Z0-9-]+(?:\.[a-zA-Z]{2,})+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=]*\/?/gi;
-  const emailRegex = /\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}\b/gi;
-  optimized = optimized.replace(emailRegex, (match) => `<span class="highlighted-text">${match}</span>`);
-  optimized = optimized.replace(urlRegex, '<span class="highlighted-text">$&</span>');
 
   const words = content.split(/(?=[^a-zA-Z0-9])|(?<=[^a-zA-Z0-9])/).filter((word) =>!emojiRegex().test(word));
   const uppercaseWords = words.filter(word => /^[A-Z]+$/.test(word) && word.length > 1 &&!wordsToAvoid.includes(word) &&!phrasesToAvoid.includes(word));
@@ -102,9 +106,9 @@ window.addEventListener('DOMContentLoaded', (event) => {
   segmentCountSpan.textContent = "(0)";
 });
 
-smsContent.addEventListener("input", () => {
-  warnings.innerHTML = "";
-  const content = smsContent.value.trim();
+smsContentInput.addEventListener("input", () => {
+  smsContentWarnings.innerHTML = "";
+  const content = smsContentInput.value.trim();
   const allWarnings = [];
 
   const { limit, warning: lengthWarning } = checkCharacterLimit(content);
@@ -120,29 +124,29 @@ smsContent.addEventListener("input", () => {
   segmentCountSpan.textContent = `(${segmentCount})`;
 
   if (content.length > limit) {
-    allWarnings.push(`Your message exceeds the character limit (${limit}).`);
+    allWarnings.push(warningMessages.characterLimitExceeded.replace("{limit}", limit));
   }
 
-  let optimizedContent = optimizeContent(content);
+  let smsContentOutputValue = generateSmsContentOutput(content);
 
   const contentWarnings = [
     checkDollarSigns(content),
     checkEmojis(content),
     checkExclamationPoints(content),
     checkUrlsAndEmails(content),
-    checkBannedWordsAndPhrases(content),
+    checkWordsAndPhrasesToAvoid(content),
     checkUppercaseWords(content),
   ].filter(Boolean);
 
   allWarnings.push(...contentWarnings);
 
   if (allWarnings.length > 0) {
-    warnings.innerHTML = "<ul>" + allWarnings.map(warning => `<li class="warning">${warning}</li>`).join("") + "</ul>";
+    smsContentWarnings.innerHTML = "<ul>" + allWarnings.map(warning => `<li class="warning">${warning}</li>`).join("") + "</ul>";
   }
 
-  if (optimizedContent!== content) {
-    optimizedContentDiv.innerHTML = `<blockquote>${optimizedContent}</blockquote>`;
+  if (smsContentOutputValue!== content) {
+    smsContentOutput.value = smsContentOutputValue;
   } else {
-    optimizedContentDiv.innerHTML = '';
+    smsContentOutput.value = '';
   }
 });
