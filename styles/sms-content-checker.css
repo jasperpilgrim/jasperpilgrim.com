@@ -1,4 +1,5 @@
-.sms-content-input, .sms-content-output {
+.sms-content-input,
+.sms-content-output {
   max-width: 50rem;
 }
 
