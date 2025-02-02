@@ -42,17 +42,17 @@ function checkCharacterLimit(content) {
 }
 
 function checkDollarSigns(content) {
-  const dollarSignCount = content.match(/\$/g) ? content.match(/\$/g).length : 0;
-  return dollarSignCount > 0 ? warningMessages.dollarSigns : null;
+  const dollarSignCount = content.match(/\$/g)? content.match(/\$/g).length: 0;
+  return dollarSignCount > 0? warningMessages.dollarSigns: null;
 }
 
 function checkEmojis(content) {
-  return emojiRegex().test(content) ? warningMessages.emojis : null;
+  return emojiRegex().test(content)? warningMessages.emojis: null;
 }
 
 function checkExclamationPoints(content) {
-  const exclamationCount = content.match(/!/g) ? content.match(/!/g).length : 0;
-  return exclamationCount > 1 ? warningMessages.exclamationPoints : null;
+  const exclamationCount = content.match(/!/g)? content.match(/!/g).length: 0;
+  return exclamationCount > 1? warningMessages.exclamationPoints: null;
 }
 
 function checkUrlsAndEmails(content) {
@@ -70,31 +70,31 @@ function checkWordsAndPhrasesToAvoid(content) {
   const check = (arr) => {
     for (const item of arr) {
       const regex = new RegExp(`\\b${item}\\b`, "gi");
-      if (regex.test(content) && !flagged.includes(item)) {
+      if (regex.test(content) &&!flagged.includes(item)) {
         flagged.push(item);
       }
     }
   };
   check(wordsToAvoid);
   check(phrasesToAvoid);
-  return flagged.length > 0 ? `${warningMessages.wordsToAvoid}${flagged.join(", ")}).` : null;
+  return flagged.length > 0? `${warningMessages.wordsToAvoid}${flagged.join(", ")}).`: null;
 }
 
 function checkUppercaseWords(content) {
-  const words = content.split(/(?=[^a-zA-Z0-9])|(?<=[^a-zA-Z0-9])/).filter((word) => !emojiRegex().test(word));
-  const uppercaseWords = words.filter(word => /^[A-Z]+$/.test(word) && word.length > 1 && !wordsToAvoid.includes(word) && !phrasesToAvoid.includes(word));
-  return uppercaseWords.length > 0 ? `${warningMessages.uppercaseWords}${uppercaseWords.join(", ")}).` : null;
+  const words = content.split(/(?=[^a-zA-Z0-9])|(?<=[^a-zA-Z0-9])/).filter((word) =>!emojiRegex().test(word));
+  const uppercaseWords = words.filter(word => /^[A-Z]+$/.test(word) && word.length > 1 &&!wordsToAvoid.includes(word) &&!phrasesToAvoid.includes(word));
+  return uppercaseWords.length > 0? `${warningMessages.uppercaseWords}${uppercaseWords.join(", ")}).`: null;
 }
 
 function generateSmsContentOutput(content) {
   let optimized = content;
   optimized = optimized.replace(emojiRegex(), "");
   optimized = optimized.replace(/!!+/g, "!");
-  optimized = optimized.replace(/!/g, (match, offset, string) => offset === string.indexOf("!") ? "!" : ".");
+  optimized = optimized.replace(/!/g, (match, offset, string) => offset === string.indexOf("!")? "!": ".");
   optimized = optimized.replace(/(^|\s)@(\s|$)/g, '$1at$2');
 
-  const words = content.split(/(?=[^a-zA-Z0-9])|(?<=[^a-zA-Z0-9])/).filter((word) => !emojiRegex().test(word));
-  const uppercaseWords = words.filter(word => /^[A-Z]+$/.test(word) && word.length > 1 && !wordsToAvoid.includes(word) && !phrasesToAvoid.includes(word));
+  const words = content.split(/(?=[^a-zA-Z0-9])|(?<=[^a-zA-Z0-9])/).filter((word) =>!emojiRegex().test(word));
+  const uppercaseWords = words.filter(word => /^[A-Z]+$/.test(word) && word.length > 1 &&!wordsToAvoid.includes(word) &&!phrasesToAvoid.includes(word));
   uppercaseWords.forEach((word) => {
     optimized = optimized.replace(new RegExp(`\\b${word}\\b`, 'g'), word.toLowerCase());
   });
@@ -115,12 +115,21 @@ smsContentInput.addEventListener("input", () => {
   if (lengthWarning) allWarnings.push(lengthWarning);
 
   const currentLength = content.length;
-  const charLengthStyle = currentLength > limit ? "color: #FF5555; font-weight: bold;" : "";
+  const charLengthStyle = currentLength > limit? "color: var(--dracula-red); font-weight: bold;": ""; // Updated
   charLengthLimitSpan.style.cssText = "";
   charLengthLimitSpan.innerHTML = `<span style="${charLengthStyle}">${currentLength}</span>/${limit}`;
 
-  const segmentLength = limit === 70 ? 67 : 153;
+  const segmentLength = limit === 70? 67: 153;
   const segmentCount = Math.ceil(currentLength / segmentLength);
+
+  if (segmentCount === 2) {
+    segmentCountSpan.style.color = "var(--dracula-orange)";
+  } else if (segmentCount > 2) {
+    segmentCountSpan.style.color = "var(--dracula-red)";
+  } else {
+    segmentCountSpan.style.color = "";
+  }
+
   segmentCountSpan.textContent = `(${segmentCount})`;
 
   if (content.length > limit) {
@@ -144,7 +153,7 @@ smsContentInput.addEventListener("input", () => {
     smsContentWarnings.innerHTML = "<ul>" + allWarnings.map(warning => `<li class="warning">${warning}</li>`).join("") + "</ul>";
   }
 
-  if (smsContentOutputValue !== content) {
+  if (smsContentOutputValue!== content) {
     smsContentOutput.value = smsContentOutputValue;
   } else {
     smsContentOutput.value = '';
