@@ -60,4 +60,5 @@ main, #smsContentInput, #smsContentOutput, .warning  {
   max-width: 50rem;
   min-height: 4rem;
   margin-bottom: 1rem;
+  margin-top: 1rem;
 }
