@@ -28,7 +28,8 @@
 }
 
 .highlighted-text {
-  color: var(--dracula-orange);
+  color: var(--dracula-background);
+  background-color: var(--dracula-orange);
 }
 
 .warning {
