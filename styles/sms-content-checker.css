@@ -33,7 +33,8 @@ main, #smsContentInput, #smsContentOutput, .warning  {
 
 .highlighted-text {
   color: var(--dracula-background);
-  background-color: var(--dracula-orange);
+  background-color: var(--dracula-red);
+  font-weight: bold;
 }
 
 .warning {
