@@ -49,6 +49,7 @@ main, #smsContentInput, #smsContentOutput, .warning  {
 
 .warning .warning-type {
   color: var(--dracula-red);
+  font-style: italic;
 }
 
 #smsContentHighlighted {
