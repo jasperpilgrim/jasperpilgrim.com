@@ -44,3 +44,15 @@
 .warning .warning-type {
   color: var(--dracula-red);
 }
+
+#smsContentHighlighted {
+  font-family: monospace;
+  font-size: 0.9rem;
+  padding: 0.5rem;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  width: 100%;
+  max-width: 50rem;
+  min-height: 10rem;
+  margin-bottom: 2rem;
+}

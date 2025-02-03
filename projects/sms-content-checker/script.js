@@ -2,8 +2,7 @@ import emojiRegex from "https://esm.sh/emoji-regex";
 
 const smsContentInput = document.getElementById("smsContentInput");
 const smsContentWarnings = document.getElementById("smsContentWarnings");
-const messageOutputDiv = document.querySelector(".sms-content-output");
-const smsContentOutput = document.getElementById("smsContentOutput");
+const smsContentHighlighted = document.getElementById("smsContentHighlighted");
 
 const wordsToAvoid = [
   "cocaine", "kush", "ganja", "weed", "pot", "reefer", "pcp", "marijuana",
@@ -42,17 +41,17 @@ function checkCharacterLimit(content) {
 }
 
 function checkDollarSigns(content) {
-  const dollarSignCount = content.match(/\$/g)? content.match(/\$/g).length: 0;
-  return dollarSignCount > 0? warningMessages.dollarSigns: null;
+  const dollarSignCount = content.match(/\$/g) ? content.match(/\$/g).length : 0;
+  return dollarSignCount > 0 ? warningMessages.dollarSigns : null;
 }
 
 function checkEmojis(content) {
-  return emojiRegex().test(content)? warningMessages.emojis: null;
+  return emojiRegex().test(content) ? warningMessages.emojis : null;
 }
 
 function checkExclamationPoints(content) {
-  const exclamationCount = content.match(/!/g)? content.match(/!/g).length: 0;
-  return exclamationCount > 1? warningMessages.exclamationPoints: null;
+  const exclamationCount = content.match(/!/g)?.length || 0;
+  return exclamationCount > 1 ? warningMessages.exclamationPoints : null;
 }
 
 function checkUrlsAndEmails(content) {
@@ -70,36 +69,62 @@ function checkWordsAndPhrasesToAvoid(content) {
   const check = (arr) => {
     for (const item of arr) {
       const regex = new RegExp(`\\b${item}\\b`, "gi");
-      if (regex.test(content) &&!flagged.includes(item)) {
+      if (regex.test(content) && !flagged.includes(item)) {
         flagged.push(item);
       }
     }
   };
   check(wordsToAvoid);
   check(phrasesToAvoid);
-  return flagged.length > 0? `${warningMessages.wordsToAvoid}${flagged.join(", ")}).`: null;
+  return flagged.length > 0 ? `${warningMessages.wordsToAvoid}${flagged.join(", ")}).` : null;
 }
 
 function checkUppercaseWords(content) {
-  const words = content.split(/(?=[^a-zA-Z0-9])|(?<=[^a-zA-Z0-9])/).filter((word) =>!emojiRegex().test(word));
-  const uppercaseWords = words.filter(word => /^[A-Z]+$/.test(word) && word.length > 1 &&!wordsToAvoid.includes(word) &&!phrasesToAvoid.includes(word));
-  return uppercaseWords.length > 0? `${warningMessages.uppercaseWords}${uppercaseWords.join(", ")}).`: null;
+  const words = content.split(/(?=[^a-zA-Z0-9])|(?<=[^a-zA-Z0-9])/).filter((word) => !emojiRegex().test(word));
+  const uppercaseWords = words.filter(word => /^[A-Z]+$/.test(word) && word.length > 1 && !wordsToAvoid.includes(word) && !phrasesToAvoid.includes(word));
+  return uppercaseWords.length > 0 ? `${warningMessages.uppercaseWords}${uppercaseWords.join(", ")}).` : null;
 }
 
-function generateSmsContentOutput(content) {
-  let optimized = content;
-  optimized = optimized.replace(emojiRegex(), "");
-  optimized = optimized.replace(/!!+/g, "!");
-  optimized = optimized.replace(/!/g, (match, offset, string) => offset === string.indexOf("!")? "!": ".");
-  optimized = optimized.replace(/(^|\s)@(\s|$)/g, '$1at$2');
+function escapeHtml(unsafe) {
+  return unsafe
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+}
 
-  const words = content.split(/(?=[^a-zA-Z0-9])|(?<=[^a-zA-Z0-9])/).filter((word) =>!emojiRegex().test(word));
-  const uppercaseWords = words.filter(word => /^[A-Z]+$/.test(word) && word.length > 1 &&!wordsToAvoid.includes(word) &&!phrasesToAvoid.includes(word));
-  uppercaseWords.forEach((word) => {
-    optimized = optimized.replace(new RegExp(`\\b${word}\\b`, 'g'), word.toLowerCase());
+function generateHighlightedContent(content) {
+  let highlightedContent = escapeHtml(content);
+  let exclamationCount = 0;
+
+  const warnings = [
+    { regex: /\$/g, class: 'highlighted-text' },
+    { regex: emojiRegex(), class: 'highlighted-text' },
+    {
+      regex: /!/g, class: 'highlighted-text', shouldHighlight: () => {
+        exclamationCount++;
+        return exclamationCount > 1;
+      }
+    },
+    { regex: /(?:https?:\/\/)?(?:www\.)?[a-zA-Z0-9-]+(?:\.[a-zA-Z]{2,})+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=]*\/?/gi, class: 'highlighted-text' },
+    { regex: /\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}\b/gi, class: 'highlighted-text' },
+    { regex: /@/g, class: 'highlighted-text' },
+    { regex: new RegExp(`\\b(${[...wordsToAvoid, ...phrasesToAvoid].join('|')})\\b`, "gi"), class: 'highlighted-text' },
+    { regex: /\b[A-Z]{2,}\b/g, class: 'highlighted-text' }
+  ];
+
+  warnings.forEach(warning => {
+    if (warning.shouldHighlight) {
+      highlightedContent = highlightedContent.replace(warning.regex, (match) => {
+        return warning.shouldHighlight() ? `<span class="${warning.class}">${match}</span>` : match;
+      });
+    } else {
+      highlightedContent = highlightedContent.replace(warning.regex, `<span class="${warning.class}">$&</span>`);
+    }
   });
 
-  return optimized;
+  return highlightedContent;
 }
 
 window.addEventListener('DOMContentLoaded', (event) => {
@@ -115,11 +140,11 @@ smsContentInput.addEventListener("input", () => {
   if (lengthWarning) allWarnings.push(lengthWarning);
 
   const currentLength = content.length;
-  const charLengthStyle = currentLength > limit? "color: var(--dracula-red); font-weight: bold;": "";
+  const charLengthStyle = currentLength > limit ? "color: var(--dracula-red); font-weight: bold;" : "";
   charLengthLimitSpan.style.cssText = "";
   charLengthLimitSpan.innerHTML = `<span style="${charLengthStyle}">${currentLength}</span>/${limit}`;
 
-  const segmentLength = limit === 70? 67: 153;
+  const segmentLength = limit === 70 ? 67 : 153;
   const segmentCount = Math.ceil(currentLength / segmentLength);
 
   let segmentCountValue = `(${segmentCount})`;
@@ -136,8 +161,6 @@ smsContentInput.addEventListener("input", () => {
     allWarnings.push(warningMessages.characterLimitExceeded.replace("{limit}", limit));
   }
 
-  let smsContentOutputValue = generateSmsContentOutput(content);
-
   const contentWarnings = [
     checkDollarSigns(content),
     checkEmojis(content),
@@ -153,9 +176,6 @@ smsContentInput.addEventListener("input", () => {
     smsContentWarnings.innerHTML = "<ul>" + allWarnings.map(warning => `<li class="warning">${warning}</li>`).join("") + "</ul>";
   }
 
-  if (smsContentOutputValue!== content) {
-    smsContentOutput.value = smsContentOutputValue;
-  } else {
-    smsContentOutput.value = '';
-  }
+  const highlightedContent = generateHighlightedContent(content);
+  smsContentHighlighted.innerHTML = highlightedContent;
 });
