@@ -1,3 +1,7 @@
+main, #smsContentInput, #smsContentOutput, .warning  {
+  font-size: 0.75rem;
+}
+
 .sms-content-input,
 .sms-content-output {
   max-width: 50rem;
@@ -6,14 +10,14 @@
 #smsContentInput,
 #smsContentOutput {
   font-family: monospace;
-  font-size: 0.9rem;
+  /* font-size: 0.9rem; */
   resize: none;
 }
 
 #charCount {
   display: block;
   text-align: right;
-  font-size: 0.9rem;
+  /* font-size: 0.9rem; */
   margin-top: -15px;
 }
 
@@ -34,7 +38,7 @@
 
 .warning {
   list-style: none;
-  font-size: 0.9rem;
+  /* font-size: 0.9rem; */
 }
 
 .warning::before {
@@ -48,7 +52,7 @@
 
 #smsContentHighlighted {
   font-family: monospace;
-  font-size: 0.9rem;
+  /* font-size: 0.9rem; */
   padding: 0.5rem;
   white-space: pre-wrap;
   word-wrap: break-word;
