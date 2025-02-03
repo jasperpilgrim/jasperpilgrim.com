@@ -54,6 +54,6 @@
   word-wrap: break-word;
   width: 100%;
   max-width: 50rem;
-  min-height: 10rem;
-  margin-bottom: 2rem;
+  min-height: 4rem;
+  /* margin-bottom: 1rem; */
 }
