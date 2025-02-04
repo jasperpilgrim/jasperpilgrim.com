@@ -21,6 +21,21 @@ body {
 	color: var(--dracula-foreground);
 }
 
+nav {
+	display: flex;
+  justify-content: center;
+}
+
+nav ul {
+	display: flex;
+}
+
+main {
+	display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
 a {
 	color: var(--dracula-pink);
 	text-decoration: none;
