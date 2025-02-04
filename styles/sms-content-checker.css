@@ -1,24 +1,47 @@
-main, #smsContentInput, #smsContentOutput, .warning  {
-  font-size: 0.75rem;
+main {
+  max-width: 80rem;
+  margin: 0 auto;
+  padding: 1rem;
 }
 
-.sms-content-input,
-.sms-content-output {
-  max-width: 50rem;
+h1 {
+  text-align: center;
 }
 
 #smsContentInput,
-#smsContentOutput {
-  font-family: monospace;
-  /* font-size: 0.9rem; */
-  resize: none;
+#smsContentHighlighted {
+  max-width: 50rem;
+  margin: 0 auto;
+  margin-bottom: 2rem;
+}
+
+#smsContentHighlighted {
+  /* font-family: monospace; */
+  padding: 0.5rem;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  /* width: 100%;
+  max-width: 50rem;
+  min-height: 4rem; */
+  margin-bottom: 1rem;
+  margin-top: 1rem;
+  color: var(--dracula-comment);
+  border-top: 1px solid var(--dracula-current-line);
+  border-bottom: 1px solid var(--dracula-current-line);
+}
+
+.sms-content-input {
+  max-width: 50rem;
+  margin: 0 auto;
+  position: relative;
 }
 
 #charCount {
-  display: block;
-  text-align: right;
-  /* font-size: 0.9rem; */
-  margin-top: -15px;
+  position: absolute;
+  right: 0;
+  top: 100%;
+  margin-top: 0.2rem;
+  font-size: 0.85rem;
 }
 
 #charLength,
@@ -32,14 +55,16 @@ main, #smsContentInput, #smsContentOutput, .warning  {
 }
 
 .highlighted-text {
-  color: var(--dracula-background);
-  background-color: var(--dracula-red);
-  font-weight: bold;
+  color: var(--dracula-orange);
+  background-color: var(--dracula-background);
+  /* font-weight: bold; */
+  /* font-size: 1.1rem; */
 }
 
 .warning {
   list-style: none;
-  /* font-size: 0.9rem; */
+  margin: 0 auto;
+  max-width: 50rem;
 }
 
 .warning::before {
@@ -49,18 +74,5 @@ main, #smsContentInput, #smsContentOutput, .warning  {
 
 .warning .warning-type {
   color: var(--dracula-red);
-  font-style: italic;
-}
-
-#smsContentHighlighted {
-  font-family: monospace;
-  /* font-size: 0.9rem; */
-  padding: 0.5rem;
-  white-space: pre-wrap;
-  word-wrap: break-word;
-  width: 100%;
-  max-width: 50rem;
-  min-height: 4rem;
-  margin-bottom: 1rem;
-  margin-top: 1rem;
+  /* font-weight: bold; */
 }
