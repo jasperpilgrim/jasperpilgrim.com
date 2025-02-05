@@ -146,7 +146,7 @@ function generateHighlightedContent(content) {
       },
     },
     { regex: urlRegex, class: "highlighted-text" },
-    { regex: /\S+@/g, class: "highlighted-text" },
+    { regex: /\S+@|\s@/g, class: "highlighted-text" },
     { regex: combinedAvoidRegex, class: "highlighted-text" },
     { regex: uppercaseWordsRegex, class: "highlighted-text" },
     { regex: /[^\x00-\x7F]/g, class: "highlighted-text" },
