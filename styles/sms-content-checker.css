@@ -48,7 +48,7 @@ h1 {
 }
 
 .highlighted-text {
-  color: var(--dracula-orange);
+  color: var(--dracula-red);
   background-color: var(--dracula-background);
 }
 
