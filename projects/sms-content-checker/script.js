@@ -5,28 +5,28 @@ const smsContentWarnings = document.getElementById("smsContentWarnings");
 const smsContentHighlighted = document.getElementById("smsContentHighlighted");
 
 const wordsToAvoid = [
-  "cocaine", "kush", "ganja", "weed", "pot", "reefer", "pcp", "marijuana",
-  "dope", "acid", "thc", "cash", "bonus", "spam", "deal", "free",
-  "guaranteed", "urgent", "benjamins", "exclusive"
+    "cocaine", "kush", "ganja", "weed", "pot", "reefer", "pcp", "marijuana",
+    "dope", "acid", "thc", "cash", "bonus", "spam", "deal", "free",
+    "guaranteed", "urgent", "benjamins", "exclusive"
 ];
 
 const phrasesToAvoid = [
-  "apply now", "take action", "act now", "limited time", "call now",
-  "no strings attached", "no credit check", "hey there", "hi there"
+    "apply now", "take action", "act now", "limited time", "call now",
+    "no strings attached", "no credit check", "hey there", "hi there"
 ];
 
 const charLengthLimitSpan = document.getElementById("charLengthLimit");
 const segmentCountSpan = document.getElementById("segmentCount");
 
 const warningMessages = {
-  characterLimit: "<span class='warning-type'>Character Limit:</span> Special characters reduce the character limit from 160 to 70",
-  characterLimitExceeded: "<span class='warning-type'>Character Limit:</span> Message exceeds the character limit of {limit}.",
-  dollarSigns: "<span class='warning-type'>Dollar Signs:</span> Use 'USD' or 'CAN'.",
-  emojis: "<span class='warning-type'>Emojis:</span> May reduce deliverability rate.",
-  exclamationPoints: "<span class='warning-type'>Exclamation Points:</span> Limit to one per message.",
-  urlsAndAtSymbols: "<span class='warning-type'>URLs & \"@\" Symbols:</span> May increase odds of carrier filtering.",
-  wordsToAvoid: "<span class='warning-type'>Words & Phrases to Avoid:</span> Do not use high-risk words or phrases (",
-  uppercaseWords: "<span class='warning-type'>Uppercase Words:</span> Do not use all caps (",
+    characterLimit: "<span class='warning-type'>Character Limit:</span> Special characters reduce the character limit from 160 to 70",
+    characterLimitExceeded: "<span class='warning-type'>Character Limit:</span> Message exceeds the character limit of {limit}.",
+    dollarSigns: "<span class='warning-type'>Dollar Signs:</span> Use 'USD' or 'CAN'.",
+    emojis: "<span class='warning-type'>Emojis:</span> May reduce deliverability rate.",
+    exclamationPoints: "<span class='warning-type'>Exclamation Points:</span> Limit to one per message.",
+    urlsAndAtSymbols: "<span class='warning-type'>URLs & \"@\" Symbols:</span> May increase odds of carrier filtering.",
+    wordsToAvoid: "<span class='warning-type'>Words & Phrases to Avoid:</span> Do not use high-risk words or phrases (",
+    uppercaseWords: "<span class='warning-type'>Uppercase Words:</span> Do not use all caps (",
 };
 
 const dollarSignRegex = /\$/g;
@@ -35,200 +35,230 @@ const urlRegex = /(?:https?:\/\/)?(?:www\.)?[a-zA-Z0-9-]+(?:\.[a-zA-Z]{2,})+[\w\
 const uppercaseWordsRegex = /\b[A-Z]{2,}\b/g;
 const combinedAvoidRegex = new RegExp(`\\b(${[...wordsToAvoid, ...phrasesToAvoid].join('|')})\\b`, "gi");
 
+const uppercaseWhitelist = [
+    "PRN", "FT", "PT", "FTE", "LT", "RN", "LPN", "LVN", "CNA", "MA",
+    "CMA", "RFP", "EMT", "PTO", "EOD", "EOW", "BGC", "BLS",
+    "ACLS", "PALS", "NRP", "COVID", "ICU", "ER", "OR", "PACU", "NICU",
+    "PICU", "HIPAA", "OSHA", "CME", "MD", "DO", "PA", "NP", "CRNA",
+    "RD", "MT", "RT", "OT", "SLP", "LCSW", "LMSW", "LMFT", "LPC",
+    "PCT", "HUC", "CM", "CNS", "COTA", "VMS", "MSP", "ATS", "LOA",
+    "FMLA", "GME", "MLT", "EHR", "EMR", "JCAHO", "TJC", "DON", "DOH",
+    "CDC", "FDA", "AMA", "ANA", "CMS", "NOC", "IV", "ALF", "SNF",
+    "LTAC", "HR", "HRIS", "TA", "RPO", "KPI", "SLA", "WFH", "RTO",
+    "DOE", "YOY", "EVP", "GM", "VP", "SVP", "EVP", "CEO", "CFO",
+    "COO", "CIO", "CTO", "CMO", "CHRO", "SMB", "NDA", "PE", "LI",
+    "SEO", "PPC", "EEOC", "FLSA", "ADA", "IC",
+    "AL", "AK", "AZ", "AR", "CA", "CO", "CT", "DE", "FL", "GA",
+    "HI", "ID", "IL", "IN", "IA", "KS", "KY", "LA", "ME", "MD",
+    "MA", "MI", "MN", "MS", "MO", "MT", "NE", "NV", "NH", "NJ",
+    "NM", "NY", "NC", "ND", "OH", "OK", "OR", "PA", "RI", "SC",
+    "SD", "TN", "TX", "UT", "VT", "VA", "WA", "WV", "WI", "WY",
+    "DC", "LTC"
+];
+
 function checkCharacterLimit(content) {
-  let charLimit = 160;
-  let specialChars = "";
+    let charLimit = 160;
+    let specialChars = "";
 
-  if (/[^\x00-\x7F]/.test(content)) {
-    charLimit = 70;
-    const uniqueChars = new Set();
+    if (/[^\x00-\x7F]/.test(content)) {
+        charLimit = 70;
+        const uniqueChars = new Set();
 
-    for (let i = 0; i < content.length; i++) {
-      const charCode = content.charCodeAt(i);
+        for (let i = 0; i < content.length; i++) {
+            const charCode = content.charCodeAt(i);
 
-      if (charCode > 127) {
-        const char = content.charAt(i);
+            if (charCode > 127) {
+                const char = content.charAt(i);
 
-        if (i + 1 < content.length) {
-          const nextCharCode = content.charCodeAt(i + 1);
-          if (
-            (charCode >= 0xd800 && charCode <= 0xdbff &&
-              nextCharCode >= 0xdc00 &&
-              nextCharCode <= 0xdfff) ||
-            (charCode >= 0xdc00 &&
-              charCode <= 0xdfff &&
-              (nextCharCode < 0xd800 || nextCharCode > 0xdbff))
-          ) {
-            uniqueChars.add(char + content.charAt(i + 1));
-            i++;
-            continue;
-          }
+                if (i + 1 < content.length) {
+                    const nextCharCode = content.charCodeAt(i + 1);
+                    if (
+                        (charCode >= 0xd800 && charCode <= 0xdbff &&
+                            nextCharCode >= 0xdc00 &&
+                            nextCharCode <= 0xdfff) ||
+                        (charCode >= 0xdc00 &&
+                            charCode <= 0xdfff &&
+                            (nextCharCode < 0xd800 || nextCharCode > 0xdbff))
+                    ) {
+                        uniqueChars.add(char + content.charAt(i + 1));
+                        i++;
+                        continue;
+                    }
+                }
+                uniqueChars.add(char);
+            }
         }
-        uniqueChars.add(char);
-      }
+
+        specialChars = [...uniqueChars].join(", ");
+        return {
+            limit: charLimit,
+            warning: `${warningMessages.characterLimit} (${specialChars}).`,
+        };
     }
 
-    specialChars = [...uniqueChars].join(", ");
-    return {
-      limit: charLimit,
-      warning: `${warningMessages.characterLimit} (${specialChars}).`,
-    };
-  }
-
-  return { limit: charLimit, warning: null };
+    return { limit: charLimit, warning: null };
 }
 
 function checkDollarSigns(content) {
-  const dollarSignCount = (content.match(dollarSignRegex) || []).length;
-  return dollarSignCount > 0 ? warningMessages.dollarSigns : null;
+    const dollarSignCount = (content.match(dollarSignRegex) || []).length;
+    return dollarSignCount > 0 ? warningMessages.dollarSigns : null;
 }
 
 function checkEmojis(content) {
-  return emojiRegex().test(content) ? warningMessages.emojis : null;
+    return emojiRegex().test(content) ? warningMessages.emojis : null;
 }
 
 function checkExclamationPoints(content) {
-  const exclamationCount = (content.match(exclamationRegex) || []).length;
-  return exclamationCount > 1 ? warningMessages.exclamationPoints : null;
+    const exclamationCount = (content.match(exclamationRegex) || []).length;
+    return exclamationCount > 1 ? warningMessages.exclamationPoints : null;
 }
 
 function checkUrlsAndEmails(content) {
-  if (urlRegex.test(content)) {
-    return warningMessages.urlsAndAtSymbols;
-  }
-  return null;
+    if (urlRegex.test(content)) {
+        return warningMessages.urlsAndAtSymbols;
+    }
+    return null;
 }
 
 function checkWordsAndPhrasesToAvoid(content) {
-  const matches = content.match(combinedAvoidRegex);
-  const flagged = matches ? [...new Set(matches)] : [];
-  return flagged.length > 0 ? `${warningMessages.wordsToAvoid}${flagged.join(", ")}).` : null;
+    const matches = content.match(combinedAvoidRegex);
+    const flagged = matches ? [...new Set(matches)] : [];
+    return flagged.length > 0 ? `${warningMessages.wordsToAvoid}${flagged.join(", ")}).` : null;
 }
 
 function checkUppercaseWords(content) {
-  const words = content
-    .split(/(?=[^a-zA-Z0-9])|(?<=[^a-zA-Z0-9])/)
-    .filter((word) => !emojiRegex().test(word));
-  const uppercaseWords = words.filter(
-    (word) =>
-      uppercaseWordsRegex.test(word) &&
-      word.length > 1 &&
-      !wordsToAvoid.includes(word) &&
-      !phrasesToAvoid.includes(word)
-  );
-  return uppercaseWords.length > 0
-    ? `${warningMessages.uppercaseWords}${uppercaseWords.join(", ")}).`
-    : null;
+    const words = content
+        .split(/(?=[^a-zA-Z0-9])|(?<=[^a-zA-Z0-9])/)
+        .filter((word) => !emojiRegex().test(word));
+    const uppercaseWords = words.filter(
+        (word) =>
+            uppercaseWordsRegex.test(word) &&
+            word.length > 1 &&
+            !wordsToAvoid.includes(word) &&
+            !phrasesToAvoid.includes(word) &&
+            !uppercaseWhitelist.includes(word)
+    );
+    return uppercaseWords.length > 0
+        ? { warning: `${warningMessages.uppercaseWords}${uppercaseWords.join(", ")}).`, words: uppercaseWords }
+        : { warning: null, words: [] };
 }
 
 function escapeHtml(unsafe) {
-  return unsafe
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;")
-    .replace(/'/g, "&#039;");
+    return unsafe
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
 }
 
-function generateHighlightedContent(content) {
-  let highlightedContent = escapeHtml(content);
-  let exclamationCount = 0;
+function generateHighlightedContent(content, uppercaseWords) {
+    let highlightedContent = escapeHtml(content);
+    let exclamationCount = 0;
 
-  const warnings = [
-    { regex: dollarSignRegex, class: "highlighted-text" },
-    { regex: emojiRegex(), class: "highlighted-text" },
-    {
-      regex: exclamationRegex,
-      class: "highlighted-text",
-      shouldHighlight: () => {
-        exclamationCount++;
-        return exclamationCount > 1;
-      },
-    },
-    { regex: urlRegex, class: "highlighted-text" },
-    { regex: /\S+@|\s@/g, class: "highlighted-text" },
-    { regex: combinedAvoidRegex, class: "highlighted-text" },
-    { regex: uppercaseWordsRegex, class: "highlighted-text" },
-    { regex: /[^\x00-\x7F]/g, class: "highlighted-text" },
-  ];
+    const warnings = [
+        { regex: dollarSignRegex, class: "highlighted-text" },
+        { regex: emojiRegex(), class: "highlighted-text" },
+        {
+            regex: exclamationRegex,
+            class: "highlighted-text",
+            shouldHighlight: () => {
+                exclamationCount++;
+                return exclamationCount > 1;
+            },
+        },
+        { regex: urlRegex, class: "highlighted-text" },
+        { regex: /\S+@|\s@/g, class: "highlighted-text" },
+        { regex: combinedAvoidRegex, class: "highlighted-text" },
+        { regex: /[^\x00-\x7F]/g, class: "highlighted-text" },
+    ];
 
-  warnings.forEach((warning) => {
-    if (warning.shouldHighlight) {
-      highlightedContent = highlightedContent.replace(
-        warning.regex,
-        (match) => {
-          return warning.shouldHighlight()
-            ? `<span class="${warning.class}">${match}</span>`
-            : match;
+    uppercaseWords.forEach(word => {
+        const regex = new RegExp(`\\b${word}\\b`, "g");
+        warnings.push({ regex: regex, class: "highlighted-text" });
+    });
+
+    warnings.forEach((warning) => {
+        if (warning.shouldHighlight) {
+            highlightedContent = highlightedContent.replace(
+                warning.regex,
+                (match) => {
+                    return warning.shouldHighlight()
+                        ? `<span class="${warning.class}">${match}</span>`
+                        : match;
+                }
+            );
+        } else {
+            highlightedContent = highlightedContent.replace(
+                warning.regex,
+                `<span class="${warning.class}">$&</span>`
+            );
         }
-      );
-    } else {
-      highlightedContent = highlightedContent.replace(
-        warning.regex,
-        `<span class="${warning.class}">$&</span>`
-      );
-    }
-  });
+    });
 
-  return highlightedContent;
+    return highlightedContent;
 }
-
 window.addEventListener("DOMContentLoaded", (event) => {
-  segmentCountSpan.textContent = "(0)";
+    segmentCountSpan.textContent = "(0)";
 });
 
 smsContentInput.addEventListener("input", () => {
-  smsContentWarnings.innerHTML = "";
-  const content = smsContentInput.value.trim();
-  const allWarnings = [];
+    smsContentWarnings.innerHTML = "";
+    const content = smsContentInput.value.trim();
+    const allWarnings = [];
 
-  const { limit, warning: lengthWarning } = checkCharacterLimit(content);
-  if (lengthWarning) allWarnings.push(lengthWarning);
+    const { limit, warning: lengthWarning } = checkCharacterLimit(content);
+    if (lengthWarning) allWarnings.push(lengthWarning);
 
-  const currentLength = content.length;
-  const charLengthStyle = currentLength > limit
-    ? "color: var(--dracula-red); font-weight: bold;"
-    : "";
-  charLengthLimitSpan.style.cssText = "";
-  charLengthLimitSpan.innerHTML = `<span style="${charLengthStyle}">${currentLength}</span>/${limit}`;
+    const currentLength = content.length;
+    const charLengthStyle = currentLength > limit
+        ? "color: var(--dracula-red); font-weight: bold;"
+        : "";
+    charLengthLimitSpan.style.cssText = "";
+    charLengthLimitSpan.innerHTML = `<span style="${charLengthStyle}">${currentLength}</span>/${limit}`;
 
-  const segmentLength = limit === 70 ? 67 : 153;
-  const segmentCount = Math.ceil(currentLength / segmentLength);
+    const segmentLength = limit === 70 ? 67 : 153;
+    const segmentCount = Math.ceil(currentLength / segmentLength);
 
-  let segmentCountValue = `(${segmentCount})`;
+    let segmentCountValue = `(${segmentCount})`;
 
-  if (segmentCount === 2) {
-    segmentCountValue = `(<span style="color: var(--dracula-orange);">${segmentCount}</span>)`;
-  } else if (segmentCount > 2) {
-    segmentCountValue = `(<span style="color: var(--dracula-red); font-weight: bold;">${segmentCount}</span>)`;
-  }
+    if (segmentCount === 2) {
+        segmentCountValue = `(<span style="color: var(--dracula-orange);">${segmentCount}</span>)`;
+    } else if (segmentCount > 2) {
+        segmentCountValue = `(<span style="color: var(--dracula-red); font-weight: bold;">${segmentCount}</span>)`;
+    }
 
-  segmentCountSpan.innerHTML = segmentCountValue;
+    segmentCountSpan.innerHTML = segmentCountValue;
 
-  if (content.length > limit) {
-    allWarnings.push(
-      warningMessages.characterLimitExceeded.replace("{limit}", limit)
-    );
-  }
+    if (content.length > limit) {
+        allWarnings.push(
+            warningMessages.characterLimitExceeded.replace("{limit}", limit)
+        );
+    }
 
-  const contentWarnings = [
-    checkDollarSigns(content),
-    checkEmojis(content),
-    checkExclamationPoints(content),
-    checkUrlsAndEmails(content),
-    checkWordsAndPhrasesToAvoid(content),
-    checkUppercaseWords(content),
-  ].filter(Boolean);
+    const uppercaseCheck = checkUppercaseWords(content);
+    const uppercaseWarning = uppercaseCheck.warning;
+    const uppercaseWordsToHighlight = uppercaseCheck.words;
 
-  allWarnings.push(...contentWarnings);
+    if (uppercaseWarning) allWarnings.push(uppercaseWarning);
 
-  if (allWarnings.length > 0) {
-    smsContentWarnings.innerHTML =
-      "<ul>" +
-      allWarnings.map((warning) => `<li class="warning">${warning}</li>`).join("") +
-      "</ul>";
-  }
+    const contentWarnings = [
+        checkDollarSigns(content),
+        checkEmojis(content),
+        checkExclamationPoints(content),
+        checkUrlsAndEmails(content),
+        checkWordsAndPhrasesToAvoid(content),
+    ].filter(Boolean);
 
-  const highlightedContent = generateHighlightedContent(content);
-  smsContentHighlighted.innerHTML = highlightedContent;
+    allWarnings.push(...contentWarnings);
+
+    if (allWarnings.length > 0) {
+        smsContentWarnings.innerHTML =
+            "<ul>" +
+            allWarnings.map((warning) => `<li class="warning">${warning}</li>`).join("") +
+            "</ul>";
+    }
+
+    const highlightedContent = generateHighlightedContent(content, uppercaseWordsToHighlight);
+    smsContentHighlighted.innerHTML = highlightedContent;
 });
