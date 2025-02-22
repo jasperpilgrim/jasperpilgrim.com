@@ -209,7 +209,7 @@ smsContentInput.addEventListener("input", () => {
 
   const currentLength = content.length;
   const charLengthStyle = currentLength > limit
-    ? "color: var(--dracula-red); font-weight: bold;"
+    ? "color: #E53935; font-weight: bold;"
     : "";
   charLengthLimitSpan.style.cssText = "";
   charLengthLimitSpan.innerHTML = `<span style="${charLengthStyle}">${currentLength}</span>/${limit}`;
@@ -220,9 +220,9 @@ smsContentInput.addEventListener("input", () => {
   let segmentCountValue = `(${segmentCount})`;
 
   if (segmentCount === 2) {
-    segmentCountValue = `(<span style="color: var(--dracula-orange);">${segmentCount}</span>)`;
+    segmentCountValue = `(<span style="color: #FF9500;">${segmentCount}</span>)`;
   } else if (segmentCount > 2) {
-    segmentCountValue = `(<span style="color: var(--dracula-red); font-weight: bold;">${segmentCount}</span>)`;
+    segmentCountValue = `(<span style="color: #E53935; font-weight: bold;">${segmentCount}</span>)`;
   }
 
   segmentCountSpan.innerHTML = segmentCountValue;

@@ -1,62 +1,25 @@
-main {
-  max-width: 80rem;
-  margin: 0 auto;
-  padding: 1rem;
-}
-
-h1 {
-  text-align: center;
-}
-
-#smsContentInput,
-#smsContentHighlighted {
-  max-width: 50rem;
-  margin: 0 auto;
-  margin-bottom: 2rem;
-}
-
-#smsContentHighlighted {
-  padding: 0.5rem;
-  white-space: pre-wrap;
-  word-wrap: break-word;
-  margin-bottom: 1rem;
-  margin-top: 1rem;
-  color: var(--dracula-comment);
-  border-top: 1px solid var(--dracula-current-line);
-  border-bottom: 1px solid var(--dracula-current-line);
-}
-
-.sms-content-input {
-  max-width: 50rem;
-  margin: 0 auto;
-  position: relative;
-}
-
-#smsContentInput {
-  padding-bottom: 1.5rem;
-}
-
 #charCount {
-  position: absolute;
-  right: 5px;
-  bottom: 5px;
+  display: block;
+  text-align: right;
   font-size: 0.85rem;
+  margin-top: -1rem;
+  margin-bottom: 1rem;
 }
 
-#segmentCount {
-  margin-left: 5px;
+#smsContentHighlighted {
+  padding: 1rem;
+  margin-bottom: 1rem;
+  border-top: 1px solid whitesmoke;
+  border-bottom: 1px solid whitesmoke;
 }
 
 .highlighted-text {
-  color: var(--dracula-red);
-  background-color: var(--dracula-background);
+  color: #E53935;
   font-weight: bold;
 }
 
 .warning {
   list-style: none;
-  margin: 0 auto;
-  max-width: 50rem;
 }
 
 .warning::before {
@@ -65,6 +28,6 @@ h1 {
 }
 
 .warning .warning-type {
-  color: var(--dracula-red);
+  color: #E53935;
   font-weight: bold;
 }
