@@ -1,7 +1,32 @@
+#smsContentInput, #smsContentHighlighted, #smsContentWarnings {
+  font-size: 0.9rem;
+}
+
+#warningsToggle, #charCount {
+  font-size: 0.75rem;
+}
+
+#warningsToggle {
+  display: inline;
+  width: auto;
+}
+
+#warningsToggle summary {
+  display: inline-flex;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+#warningsToggle summary::-webkit-details-marker {
+  margin-right: 0.25rem;
+}
+#warningsToggle summary::marker {
+  margin-right: 0.25rem;
+}
+
 #charCount {
   display: block;
   text-align: right;
-  font-size: 0.85rem;
   margin-top: -1rem;
   margin-bottom: 1rem;
 }
@@ -30,4 +55,17 @@
 .warning .warning-type {
   color: #E53935;
   font-weight: bold;
+}
+
+#smsContentWarningsToggle {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  /* gap: 0.5rem; */
+  margin-bottom: 0.5rem;
+}
+
+#smsContentWarningsToggle label {
+  display: inline-flex;
+  align-items: center;
+  /* gap: 0.5rem; */
 }
