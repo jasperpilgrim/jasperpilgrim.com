@@ -185,16 +185,16 @@ smsContentInput.addEventListener("input", () => {
   const { limit, warning: lengthWarning } = checkCharacterLimit(content);
   if (lengthWarning) allWarnings.push(lengthWarning);
   const currentLength = content.length;
-  const charLengthStyle = currentLength > limit ? "color: #E53935; font-weight: bold;" : "";
+  const charLengthStyle = currentLength > limit ? "color: #D2042D; font-weight: bold;" : "";
   charLengthLimitSpan.style.cssText = "";
   charLengthLimitSpan.innerHTML = `<span style="${charLengthStyle}">${currentLength}</span>/${limit}`;
   const segmentLength = limit === 70 ? 67 : 153;
   const segmentCount = Math.ceil(currentLength / segmentLength);
   let segmentCountValue = `(${segmentCount})`;
   if (segmentCount === 2) {
-    segmentCountValue = `(<span style="color: #FF9500;">${segmentCount}</span>)`;
+    segmentCountValue = `(<span style="color: #FFA500;">${segmentCount}</span>)`;
   } else if (segmentCount > 2) {
-    segmentCountValue = `(<span style="color: #E53935; font-weight: bold;">${segmentCount}</span>)`;
+    segmentCountValue = `(<span style="color: #D2042D; font-weight: bold;">${segmentCount}</span>)`;
   }
   segmentCountSpan.innerHTML = segmentCountValue;
   if (content.length > limit) {
