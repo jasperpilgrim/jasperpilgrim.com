@@ -9,8 +9,11 @@ const phoneUtil = libphonenumber.PhoneNumberUtil.getInstance();
 const whitelist = ["3035552314", "9195554832", "8046657213"];
 
 function formatNumbers() {
+  // The regex matches either a US pattern or an Italian pattern.
+  // US pattern: e.g. (201) 228-3739 with optional spaces or dashes.
+  // Italian pattern: e.g. +39 340 778 6455 or 39 340 778 6455.
+  const candidateRegex = /(?:(?:\(?\d{3}\)?[\s\-]?\d{3}[\s\-]?\d{4})|(?:\+?39[\s\-]?\d{3}[\s\-]?\d{3}[\s\-]?\d{4}))/g;
   const inputText = inputNumbers.value;
-  const candidateRegex = /(?:(?!\b\d{4}-\d{2}-\d{2}\b)[\+\(]?\d[\d\-\(\) ]{7,}\d)(?=[\s,)\u201D]|$)/g;
   const candidates = inputText.match(candidateRegex) || [];
   const rawNumbers = [];
   candidates.forEach(candidate => {
@@ -39,18 +42,11 @@ function formatNumbers() {
   let occurrence = {};
   const lines = formattedNumbers.map(num => {
     occurrence[num] = (occurrence[num] || 0) + 1;
-    if (occurrence[num] > 1) {
-      return `<span style="color:red">${num}</span>`;
-    } else {
-      return num;
-    }
+    return occurrence[num] > 1 ? `<span style="color:red">${num}</span>` : num;
   });
   outputNumbers.innerHTML = lines.join("<br>");
   const totalCount = formattedNumbers.length;
-  const uniqueNumbers = Object.keys(formattedNumbers.reduce((acc, num) => {
-    acc[num] = true;
-    return acc;
-  }, {}));
+  const uniqueNumbers = Object.keys(formattedNumbers.reduce((acc, num) => (acc[num] = true, acc), {}));
   const uniqueCount = uniqueNumbers.length;
   const duplicatesCount = totalCount - uniqueCount;
   const counts = { US: 0, UK: 0, Ireland: 0, France: 0, Switzerland: 0, Sweden: 0, Italy: 0 };
@@ -74,8 +70,7 @@ function formatNumbers() {
       <div class="summary-item">Italy (<span class="count">${counts["Italy"]}</span>)</div>
     </div>
   `;
-  let summaryElement = document.getElementById("summary");
-  summaryElement.innerHTML = summaryHTML;
+  document.getElementById("summary").innerHTML = summaryHTML;
 }
 
 function copyToClipboard() {
@@ -96,7 +91,16 @@ window.formatNumbers = formatNumbers;
 
 function tryPhoneUtilParse(cleaned) {
   try {
-    const parsed = phoneUtil.parse(cleaned);
+    let region;
+    if (!cleaned.startsWith("+")) {
+      if (cleaned.startsWith("39") && cleaned.length === 12) {
+        region = "IT";
+        cleaned = "+" + cleaned;
+      } else if (cleaned.length === 10) {
+        region = "US";
+      }
+    }
+    const parsed = phoneUtil.parse(cleaned, region);
     if (phoneUtil.isPossibleNumber(parsed)) {
       return phoneUtil.format(parsed, libphonenumber.PhoneNumberFormat.E164);
     } else {
@@ -118,6 +122,7 @@ function tryManualRules(cleaned) {
   if (cleaned.length === 11 && cleaned.startsWith("33")) return `+${cleaned}`;
   if (cleaned.length === 12 && cleaned.startsWith("353")) return `+${cleaned}`;
   if (cleaned.length === 12 && cleaned.startsWith("46")) return `+${cleaned}`;
+  if (cleaned.startsWith("+39") && cleaned.length === 13) return cleaned;
   if (cleaned.length === 12 && cleaned.startsWith("39")) return `+${cleaned}`;
   return `Invalid: ${cleaned}`;
 }
@@ -130,6 +135,7 @@ function tryDefaultRegionParse(cleaned) {
     else if (cleaned.startsWith("44")) defaultRegion = "GB";
     else if (cleaned.startsWith("33")) defaultRegion = "FR";
     else if (cleaned.startsWith("41")) defaultRegion = "CH";
+    else if (cleaned.startsWith("39")) defaultRegion = "IT";
     const parsed = phoneUtil.parse(cleaned, defaultRegion);
     if (phoneUtil.isPossibleNumber(parsed)) {
       return phoneUtil.format(parsed, libphonenumber.PhoneNumberFormat.E164);
