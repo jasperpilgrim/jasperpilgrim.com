@@ -19,7 +19,7 @@
 				<li><a href="/resources/">[Resources]</a></li>
 				<li><a href="/contact/">[Contact]</a></li>
 				<li>
-					<a href="#" class="contrast" aria-label="Toggle theme" onclick="toggleTheme(); return false;">
+					<a href="#" onclick="toggleTheme(); return false;">
 						<span id="theme-icon">
 						</span>
 					</a>
@@ -29,7 +29,6 @@
 	</header>
 	<main>
 		<h1>SMS Content Checker</h1>
-
 		<details id="warningsToggle">
 			<summary>Show/Hide Warnings</summary>
 			<div id="smsContentWarningsToggle">
@@ -42,7 +41,6 @@
 				<label><input type="checkbox" data-warning-type="uppercaseWords" checked> Uppercase Words</label>
 			</div>
 		</details>
-
 		<textarea id="smsContentInput" rows="6" cols="80" placeholder="Enter your SMS content here"></textarea>
 		<output id="charCount">
 			<span id="charLengthLimit">0/160</span>

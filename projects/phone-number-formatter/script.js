@@ -152,3 +152,5 @@ function detectCountry(e164) {
   if (e164.startsWith("+1")) return "US";
   return "";
 }
+
+document.addEventListener("DOMContentLoaded", formatNumbers);

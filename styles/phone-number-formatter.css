@@ -1,25 +1,32 @@
 #inputNumbers,
-#outputNumbers {
-  font-size: 0.9rem;
+#outputNumbers,
+#summary,
+#copyMessage {
+  font-size: 0.75rem;
 }
+
 #outputNumbers {
   margin-bottom: 0;
+  min-height: 150px;
 }
+
 #copyMessage {
   color: #00CC88;
 }
+
 .summary {
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
-  font-size: 0.75rem;
-  margin-bottom: 0.25rem;
+  /* margin-bottom: 0.25rem; */
 }
+
 .summary-row {
   display: flex;
   flex-wrap: wrap;
   gap: 0.5rem;
 }
+
 .summary-item {
   flex: 1;
   text-align: center;
