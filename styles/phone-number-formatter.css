@@ -1,0 +1,29 @@
+#inputNumbers,
+#outputNumbers {
+  font-size: 0.75rem;
+}
+#outputNumbers {
+  margin-bottom: 0;
+}
+#copyMessage {
+  color: #00CC88;
+}
+.summary {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  font-size: 0.75rem;
+  margin-bottom: 0.25rem;
+}
+.summary-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+.summary-item {
+  flex: 1;
+  text-align: center;
+  padding: 0.25rem;
+  border: 1px solid #D4D4D4;
+  border-radius: 4px;
+}

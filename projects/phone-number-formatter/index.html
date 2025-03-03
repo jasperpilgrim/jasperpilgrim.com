@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Phone Number Formatter | Jasper Pilgrim</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.classless.indigo.min.css">
+  <link rel="stylesheet" href="/styles/main.css">
+  <link rel="stylesheet" href="/styles/phone-number-formatter.css">
+</head>
+<body>
+  <header>
+    <nav>
+      <ul>
+        <li><a href="/">[Home]</a></li>
+        <li><a href="/projects/">[Projects]</a></li>
+        <li><a href="/resources/">[Resources]</a></li>
+        <li><a href="/contact/">[Contact]</a></li>
+      </ul>
+    </nav>
+  </header>
+  <main>
+    <h1>Phone Number Formatter</h1>
+    <textarea id="inputNumbers" rows="8" cols="80" placeholder="Enter phone numbers here..." oninput="formatNumbers()"></textarea>
+    <div id="outputContainer">
+      <div id="summary" class="summary"></div>
+      <pre id="outputNumbers"></pre>
+      <span id="copyMessage" style="display: none;">Copied!</span>
+    </div>
+    <script type="module" src="script.js"></script>
+  </main>
+</body>
+</html>
