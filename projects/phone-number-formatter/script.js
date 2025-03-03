@@ -10,7 +10,7 @@ const whitelist = ["3035552314", "9195554832", "8046657213"];
 
 function formatNumbers() {
   const inputText = inputNumbers.value;
-  const candidateRegex = /(?:(?!\b\d{4}-\d{2}-\d{2}\b)[\+\(]?\d[\d\-\(\) ]{7,}?\d)(?=[\s,)\u201D]|$)/g;
+  const candidateRegex = /(?:(?!\b\d{4}-\d{2}-\d{2}\b)[\+\(]?\d[\d\-\(\) ]{7,}\d)(?=[\s,)\u201D]|$)/g;
   const candidates = inputText.match(candidateRegex) || [];
   const rawNumbers = [];
   candidates.forEach(candidate => {
@@ -118,7 +118,7 @@ function tryManualRules(cleaned) {
   if (cleaned.length === 11 && cleaned.startsWith("33")) return `+${cleaned}`;
   if (cleaned.length === 12 && cleaned.startsWith("353")) return `+${cleaned}`;
   if (cleaned.length === 12 && cleaned.startsWith("46")) return `+${cleaned}`;
-  if (cleaned.length === 10 && cleaned.startsWith("3")) return `+39${cleaned}`;
+  if (cleaned.length === 12 && cleaned.startsWith("39")) return `+${cleaned}`;
   return `Invalid: ${cleaned}`;
 }
 
