@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bulk SMS Content Checker | Jasper Pilgrim</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.classless.indigo.min.css">
+  <link rel="stylesheet" href="/styles/main.css">
+  <link rel="stylesheet" href="/styles/bulk-sms-content-checker.css">
+</head>
+
+<body>
+  <header>
+    <nav>
+      <ul>
+        <li><a href="/">[Home]</a></li>
+        <li><a href="/projects/">[Projects]</a></li>
+        <li><a href="/resources/">[Resources]</a></li>
+        <li><a href="/contact/">[Contact]</a></li>
+      </ul>
+    </nav>
+  </header>
+  <main>
+    <h1>Bulk SMS Content Checker</h1>
+    <div class="grid-container">
+      <div class="grid-row" id="controlRow">
+        <details>
+          <summary>Show/Hide Warnings</summary>
+          <div class="toggle-group">
+            <label><input type="checkbox" class="warning-toggle" data-warning-type="emojisAndSpecialCharacters" checked> Emojis &amp; Special Characters</label>
+            <label><input type="checkbox" class="warning-toggle" data-warning-type="characterLimit" checked> Character Limit</label>
+            <label><input type="checkbox" class="warning-toggle" data-warning-type="dollarSigns" checked> Dollar Signs</label>
+            <label><input type="checkbox" class="warning-toggle" data-warning-type="exclamationPoints" checked> Exclamation Points</label>
+            <label><input type="checkbox" class="warning-toggle" data-warning-type="urlsAndAtSymbols" checked> URLs &amp; "@ Symbols</label>
+            <label><input type="checkbox" class="warning-toggle" data-warning-type="wordsToAvoid" checked> Words &amp; Phrases to Avoid</label>
+            <label><input type="checkbox" class="warning-toggle" data-warning-type="uppercaseWords" checked> Uppercase Words</label>
+          </div>
+        </details>
+        <div class="file-input">
+          <input type="file" id="fileInput" accept=".json,.csv">
+        </div>
+      </div>
+      <div class="grid-row" id="summaryRow">
+        <div id="summaryInfo"></div>
+        <a id="downloadLink" href="#" download="sms_warnings.csv" style="display: none;">Download CSV</a>
+      </div>
+    </div>
+    <script type="module" src="script.js"></script>
+  </main>
+</body>
+
+</html>
