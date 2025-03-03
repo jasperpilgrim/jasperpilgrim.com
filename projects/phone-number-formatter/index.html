@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" data-theme="dark">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,6 +9,7 @@
   <link rel="stylesheet" href="/styles/main.css">
   <link rel="stylesheet" href="/styles/phone-number-formatter.css">
 </head>
+
 <body>
   <header>
     <nav>
@@ -16,6 +18,12 @@
         <li><a href="/projects/">[Projects]</a></li>
         <li><a href="/resources/">[Resources]</a></li>
         <li><a href="/contact/">[Contact]</a></li>
+        <li>
+          <a href="#" class="contrast" aria-label="Toggle theme" onclick="toggleTheme(); return false;">
+            <span id="theme-icon">
+            </span>
+          </a>
+        </li>
       </ul>
     </nav>
   </header>
@@ -29,5 +37,7 @@
     </div>
     <script type="module" src="script.js"></script>
   </main>
+  <script src="/toggletheme.js"></script>
 </body>
+
 </html>
