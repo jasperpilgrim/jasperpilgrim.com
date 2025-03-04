@@ -8,13 +8,14 @@
 #outputNumbers {
   padding-top: 1rem;
   padding-left: 1rem;
+  padding-bottom: 1rem;
   margin-bottom: 0;
   min-height: 150px;
   cursor: pointer;
 }
 
 #copyMessage {
-  color: #00CC88;
+  color: #90EE90;
 }
 
 .summary {
@@ -36,4 +37,26 @@
   padding: 0.25rem;
   border: 1px solid #D4D4D4;
   border-radius: 4px;
+}
+
+#showDuplicates {
+  padding: 0;
+  margin: 0;
+}
+
+#outputNumbers:hover {
+  /* background-color: #FFFFFF0D; */
+  /* background-color: #373C44; */
+  background-color: #23262C;
+}
+
+.copied-highlight {
+  background-color: #5DD121 !important;
+}
+
+#copyMessage {
+  display: none;
+  color: #5DD121;
+  margin-left: 0.5rem;
+  font-weight: bold;
 }
