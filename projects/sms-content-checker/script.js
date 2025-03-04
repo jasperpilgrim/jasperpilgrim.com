@@ -169,7 +169,7 @@ function getEnabledWarningTypes() {
 }
 
 window.addEventListener("DOMContentLoaded", () => {
-  segmentCountSpan.textContent = "(0)";
+  segmentCountSpan.innerHTML = "(Segments: 0)";
   const isOpen = localStorage.getItem('warningsToggleOpen') === 'true';
   document.getElementById('warningsToggle').open = isOpen;
 });
@@ -190,11 +190,11 @@ smsContentInput.addEventListener("input", () => {
   charLengthLimitSpan.innerHTML = `<span style="${charLengthStyle}">${currentLength}</span>/${limit}`;
   const segmentLength = limit === 70 ? 67 : 153;
   const segmentCount = Math.ceil(currentLength / segmentLength);
-  let segmentCountValue = `(${segmentCount})`;
+  let segmentCountValue = `(Segments: ${segmentCount})`;
   if (segmentCount === 2) {
-    segmentCountValue = `(<span style="color: #FFA500;">${segmentCount}</span>)`;
+    segmentCountValue = `(Segments: <span style="color: #FFA500;">${segmentCount}</span>)`;
   } else if (segmentCount > 2) {
-    segmentCountValue = `(<span style="color: #D2042D; font-weight: bold;">${segmentCount}</span>)`;
+    segmentCountValue = `(Segments: <span style="color: #D2042D; font-weight: bold;">${segmentCount}</span>)`;
   }
   segmentCountSpan.innerHTML = segmentCountValue;
   if (content.length > limit) {
