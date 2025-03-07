@@ -1,6 +1,27 @@
 import Papa from "https://cdn.skypack.dev/papaparse";
 import emojiRegex from "https://esm.sh/emoji-regex";
 
+const columnsToExclude = [
+  "account_sid",
+  "api_version",
+  "date_created",
+  "date_updated",
+  "direction",
+  "messaging_service_sid",
+  "num_media",
+  "price",
+  "price_unit",
+  "subresource_uris",
+  "uri",
+  "ApiVersion",
+  "AccountSid",
+  "Direction",
+  "Price",
+  "PriceUnit",
+  "ShortenedLinkEnabled",
+  "ShortenedLinkFirstClicked"
+];
+
 const wordsToAvoid = [
   "cocaine", "kush", "ganja", "weed", "pot", "reefer", "pcp", "marijuana",
   "dope", "acid", "thc", "cash", "bonus", "spam", "deal", "free",
@@ -14,10 +35,7 @@ const phrasesToAvoid = [
 
 function checkEmojisAndSpecialCharacters(content) {
   if (/[^\x00-\x7F]/.test(content)) {
-    return {
-      type: "emojisAndSpecialCharacters",
-      message: "Emojis & Special Characters: Reduces the character limit from 160 to 70"
-    };
+    return { type: "emojisAndSpecialCharacters", message: "Emojis & Special Characters: Reduces the character limit from 160 to 70" };
   }
   return null;
 }
@@ -28,10 +46,7 @@ function checkCharacterLimitExceeded(content) {
     limit = 70;
   }
   if (content.length > limit) {
-    return {
-      type: "characterLimit",
-      message: `Character Limit: Message exceeds the character limit of ${limit}.`
-    };
+    return { type: "characterLimit", message: `Character Limit: Message exceeds the character limit of ${limit}.` };
   }
   return null;
 }
@@ -55,7 +70,7 @@ const exclamationRegex = /!/g;
 const urlRegex = /(?:https?:\/\/)?(?:www\.)?[a-zA-Z0-9-]+(?:\.[a-zA-Z]{2,})+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=]*\/?/gi;
 const atSymbolRegex = /(?:^|\s)@(?:\s|$)/g;
 const uppercaseWordsRegex = /\b[A-Z]{2,}\b/g;
-const combinedAvoidRegex = new RegExp(`\\b(${[...processedWordsToAvoid, ...phrasesToAvoid].join('|')})\\b`, "gi");
+const combinedAvoidRegex = new RegExp(`\\b(${[...processedWordsToAvoid, ...phrasesToAvoid].join("|")})\\b`, "gi");
 
 const whitelist = [
   "acls", "ada", "al", "alf", "ama", "ana", "ar", "ats", "az", "bgc",
@@ -89,24 +104,18 @@ function convertToCSV(data) {
 }
 
 function getEnabledWarningTypes() {
-  const toggles = document.querySelectorAll('.warning-toggle');
-  return Array.from(toggles)
-    .filter(toggle => toggle.checked)
-    .map(toggle => toggle.dataset.warningType);
+  const toggles = document.querySelectorAll(".warning-toggle");
+  return Array.from(toggles).filter(toggle => toggle.checked).map(toggle => toggle.dataset.warningType);
 }
 
 function checkDollarSigns(content) {
   const count = (content.match(dollarSignRegex) || []).length;
-  return count > 0
-    ? { type: "dollarSigns", message: warningMessages.dollarSigns }
-    : null;
+  return count > 0 ? { type: "dollarSigns", message: warningMessages.dollarSigns } : null;
 }
 
 function checkExclamationPoints(content) {
   const count = (content.match(exclamationRegex) || []).length;
-  return count > 1
-    ? { type: "exclamationPoints", message: warningMessages.exclamationPoints }
-    : null;
+  return count > 1 ? { type: "exclamationPoints", message: warningMessages.exclamationPoints } : null;
 }
 
 function checkUrlsAndEmails(content) {
@@ -131,20 +140,15 @@ function checkWordsAndPhrasesToAvoid(content) {
       flagged = flagged.filter(word => word !== "urgent");
     }
   }
-  return flagged.length > 0
-    ? { type: "wordsToAvoid", message: `${warningMessages.wordsToAvoid}${flagged.join(", ")}).` }
-    : null;
+  return flagged.length > 0 ? { type: "wordsToAvoid", message: `${warningMessages.wordsToAvoid}${flagged.join(", ")}).` } : null;
 }
 
 function checkAgainstWhitelistForBulk(content) {
-  const words = content.split(/(?=[^a-zA-Z0-9])|(?<=[^a-zA-Z0-9])/)
-    .filter(word => !emojiRegex().test(word));
+  const words = content.split(/(?=[^a-zA-Z0-9])|(?<=[^a-zA-Z0-9])/).filter(word => !emojiRegex().test(word));
   const uppercaseWords = words.filter(word => uppercaseWordsRegex.test(word) && word.length > 1);
   const nonWhitelisted = uppercaseWords.filter(word => !whitelist.includes(word.toLowerCase()));
   const flagged = [...new Set(nonWhitelisted)];
-  return flagged.length > 0
-    ? { type: "uppercaseWords", message: `${warningMessages.uppercaseWords}${flagged.join(", ")}).` }
-    : null;
+  return flagged.length > 0 ? { type: "uppercaseWords", message: `${warningMessages.uppercaseWords}${flagged.join(", ")}).` } : null;
 }
 
 function processMessage(message, enabledWarningTypes) {
@@ -180,7 +184,124 @@ function processMessage(message, enabledWarningTypes) {
   return warnings;
 }
 
+function excludeColumnsFromLog(log) {
+  const newLog = {};
+  for (const key in log) {
+    if (!columnsToExclude.includes(key)) {
+      newLog[key] = log[key];
+    }
+  }
+  return newLog;
+}
+
+function openTableInNewWindow(processedLogs) {
+  const newWin = window.open("", "_blank");
+  newWin.document.write(`
+    <!DOCTYPE html>
+    <html>
+    <head>
+      <title>Bulk SMS Content Checker Output</title>
+      <style>
+        body {
+          font-family: sans-serif;
+          margin: 1rem;
+        }
+        table {
+          border-collapse: collapse;
+          width: 100%;
+          font-size: 0.8rem;
+        }
+        th, td {
+          border: 1px solid #ccc;
+          padding: 0.5rem;
+          text-align: left;
+          vertical-align: top;
+        }
+        thead {
+          background: #f9f9f9;
+        }
+        .has-warnings {
+          background-color: #ffe6e6;
+        }
+        td[data-label="body"],
+        td[data-label="Body"] {
+          max-width: 400px;
+          white-space: normal;
+          word-wrap: break-word;
+          overflow-wrap: break-word;
+        }
+        @media only screen and (max-width: 800px) {
+          table, thead, tbody, tr, th, td {
+            display: block;
+          }
+          tr {
+            margin-bottom: 1rem;
+            border: 1px solid #ccc;
+            padding: 0.5rem;
+          }
+          th {
+            display: none;
+          }
+          td {
+            border: none;
+            padding: 0.5rem 0;
+            position: relative;
+            padding-left: 45%;
+            text-align: left;
+            word-wrap: break-word;
+            white-space: normal;
+          }
+          td:before {
+            content: attr(data-label);
+            position: absolute;
+            left: 0;
+            width: 40%;
+            padding-left: 0.5rem;
+            font-weight: bold;
+            white-space: nowrap;
+          }
+        }
+      </style>
+    </head>
+    <body>
+      <h2>Bulk SMS Content Checker Output</h2>
+      <table>
+        <thead>
+          <tr></tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </body>
+    </html>
+  `);
+  newWin.document.close();
+  if (!processedLogs.length) return;
+  const doc = newWin.document;
+  const theadRow = doc.querySelector("thead tr");
+  const tbody = doc.querySelector("tbody");
+  const headers = Object.keys(processedLogs[0]);
+  headers.forEach(header => {
+    const th = doc.createElement("th");
+    th.textContent = header;
+    theadRow.appendChild(th);
+  });
+  processedLogs.forEach(row => {
+    const tr = doc.createElement("tr");
+    if (row.Warnings && row.Warnings !== "No Warnings") {
+      tr.classList.add("has-warnings");
+    }
+    headers.forEach(header => {
+      const td = doc.createElement("td");
+      td.setAttribute("data-label", header);
+      td.textContent = row[header];
+      tr.appendChild(td);
+    });
+    tbody.appendChild(tr);
+  });
+}
+
 function processLogs(logs) {
+  logs = logs.map(excludeColumnsFromLog);
   const enabledWarningTypes = getEnabledWarningTypes();
   let totalWarningsCount = 0;
   const warningTypeCounts = {};
@@ -197,9 +318,7 @@ function processLogs(logs) {
     });
     return {
       ...log,
-      Warnings: warnings.length
-        ? [...new Set(warnings.map(w => w.type))].join(" | ")
-        : "No Warnings"
+      Warnings: warnings.length ? [...new Set(warnings.map(w => w.type))].join(" | ") : "No Warnings"
     };
   });
   let summaryHtml = `<p>Total warnings found: ${totalWarningsCount}</p>`;
@@ -211,19 +330,24 @@ function processLogs(logs) {
   }
   summaryHtml += `</tbody></table>`;
   document.getElementById("summaryInfo").innerHTML = summaryHtml;
-  const csv = convertToCSV(processedLogs);
-  const blob = new Blob([csv], { type: 'text/csv' });
-  const url = URL.createObjectURL(blob);
-  const downloadLink = document.getElementById("downloadLink");
-  downloadLink.href = url;
-  downloadLink.style.display = "inline-block";
+  if (processedLogs.length) {
+    const csv = convertToCSV(processedLogs);
+    const blob = new Blob([csv], { type: "text/csv" });
+    const url = URL.createObjectURL(blob);
+    const downloadLink = document.getElementById("downloadLink");
+    downloadLink.href = url;
+    downloadLink.style.display = "inline-block";
+    const viewTableLink = document.getElementById("viewTableLink");
+    viewTableLink.style.display = "inline-block";
+    viewTableLink.onclick = e => {
+      e.preventDefault();
+      openTableInNewWindow(processedLogs);
+    };
+  }
 }
 
 function parseCSV(csvText) {
-  const result = Papa.parse(csvText, {
-    header: true,
-    skipEmptyLines: true
-  });
+  const result = Papa.parse(csvText, { header: true, skipEmptyLines: true });
   if (result.errors.length) {
     console.error("CSV parse errors:", result.errors);
     alert("Error parsing CSV file. See console for details.");
@@ -233,10 +357,7 @@ function parseCSV(csvText) {
     const bodyVal = row.Body || row.body || "";
     delete row.Body;
     delete row.body;
-    return {
-      ...row,
-      body: bodyVal
-    };
+    return { ...row, body: bodyVal };
   });
   return data;
 }
@@ -254,9 +375,7 @@ fileInput.addEventListener("change", () => {
       const extension = (file.name.split(".").pop() || "").toLowerCase();
       if (extension === "json") {
         const parsed = JSON.parse(e.target.result);
-        const logs = Array.isArray(parsed.messages)
-          ? parsed.messages
-          : (Array.isArray(parsed) ? parsed : null);
+        const logs = Array.isArray(parsed.messages) ? parsed.messages : (Array.isArray(parsed) ? parsed : null);
         if (!logs) {
           alert("Invalid JSON format. Expected an array of log objects or an object with a 'messages' array.");
           return;

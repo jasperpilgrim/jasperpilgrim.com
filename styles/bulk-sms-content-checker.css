@@ -8,7 +8,6 @@
 
 .grid-row {
   padding: 1rem;
-  /* border-bottom: 4px solid #524ED2; */
   border-bottom: 1px solid whitesmoke;
   border-radius: 4px;
 }
@@ -19,9 +18,7 @@
   gap: 0.5rem;
 }
 
-.file-input {
-  /* margin-top: 2rem; */
-}
+.file-input {}
 
 details {
   display: inline-block;
@@ -36,15 +33,22 @@ details {
   width: 100%;
   border-collapse: collapse;
   margin-top: 1rem;
+  font-size: 0.85rem;
+}
+
+.summary-table thead {
+  background-color: rgba(255, 255, 255, 0.05);
 }
 
 .summary-table th,
 .summary-table td {
   border: 1px solid rgba(255, 255, 255, 0.15);
-  padding: 0.5rem;
+  padding: 0.5rem 1rem;
   text-align: left;
 }
 
-.summary-table th {
-  background-color: rgba(255, 255, 255, 0.05);
+#linkRow {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 1rem;
 }

@@ -3,7 +3,7 @@
 
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
   <title>Bulk SMS Content Checker | Jasper Pilgrim</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.classless.indigo.min.css">
   <link rel="stylesheet" href="/styles/main.css">
@@ -20,10 +20,9 @@
         <li><a href="/contact/">[Contact]</a></li>
         <li>
           <a href="#" onclick="toggleTheme(); return false;">
-						<span id="theme-icon">
-						</span>
-					</a>
-				</li>
+            <span id="theme-icon"></span>
+          </a>
+        </li>
       </ul>
     </nav>
   </header>
@@ -34,12 +33,12 @@
         <details>
           <summary>Show/Hide Warnings</summary>
           <div class="toggle-group">
-            <label><input type="checkbox" class="warning-toggle" data-warning-type="emojisAndSpecialCharacters" checked> Emojis &amp; Special Characters</label>
+            <label><input type="checkbox" class="warning-toggle" data-warning-type="emojisAndSpecialCharacters" checked> Emojis & Special Characters</label>
             <label><input type="checkbox" class="warning-toggle" data-warning-type="characterLimit" checked> Character Limit</label>
             <label><input type="checkbox" class="warning-toggle" data-warning-type="dollarSigns" checked> Dollar Signs</label>
             <label><input type="checkbox" class="warning-toggle" data-warning-type="exclamationPoints" checked> Exclamation Points</label>
-            <label><input type="checkbox" class="warning-toggle" data-warning-type="urlsAndAtSymbols" checked> URLs &amp; "@ Symbols</label>
-            <label><input type="checkbox" class="warning-toggle" data-warning-type="wordsToAvoid" checked> Words &amp; Phrases to Avoid</label>
+            <label><input type="checkbox" class="warning-toggle" data-warning-type="urlsAndAtSymbols" checked> URLs & "@ Symbols</label>
+            <label><input type="checkbox" class="warning-toggle" data-warning-type="wordsToAvoid" checked> Words & Phrases to Avoid</label>
             <label><input type="checkbox" class="warning-toggle" data-warning-type="uppercaseWords" checked> Uppercase Words</label>
           </div>
         </details>
@@ -47,9 +46,13 @@
           <input type="file" id="fileInput" accept=".json,.csv">
         </div>
       </div>
+
       <div class="grid-row" id="summaryRow">
         <div id="summaryInfo"></div>
-        <a id="downloadLink" href="#" download="sms_warnings.csv" style="display: none;">Download CSV</a>
+        <div id="linkRow">
+          <a id="downloadLink" href="#" download="sms_warnings.csv" style="display: none;">Download CSV</a>
+          <a id="viewTableLink" href="#" style="display: none;">View in Browser</a>
+        </div>
       </div>
     </div>
     <script type="module" src="script.js"></script>
