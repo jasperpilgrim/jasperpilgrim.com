@@ -23,14 +23,14 @@ const columnsToExclude = [
 ];
 
 const wordsToAvoid = [
-  "cocaine", "kush", "ganja", "weed", "pot", "reefer", "pcp", "marijuana",
-  "dope", "acid", "thc", "cash", "bonus", "spam", "deal", "free",
-  "guaranteed", "urgent", "benjamins", "exclusive"
+  "cocaine","kush","ganja","weed","pot","reefer","pcp","marijuana",
+  "dope","acid","thc","cash","bonus","spam","deal","free",
+  "guaranteed","urgent","benjamins","exclusive"
 ];
 
 const phrasesToAvoid = [
-  "apply now", "take action", "act now", "limited time", "call now",
-  "no strings attached", "no credit check", "hey there", "hi there"
+  "apply now","take action","act now","limited time","call now",
+  "no strings attached","no credit check","hey there","hi there"
 ];
 
 function checkEmojisAndSpecialCharacters(content) {
@@ -73,21 +73,21 @@ const uppercaseWordsRegex = /\b[A-Z]{2,}\b/g;
 const combinedAvoidRegex = new RegExp(`\\b(${[...processedWordsToAvoid, ...phrasesToAvoid].join("|")})\\b`, "gi");
 
 const whitelist = [
-  "acls", "ada", "al", "alf", "ama", "ana", "ar", "ats", "az", "bgc",
-  "bls", "ca", "cdc", "cm", "cma", "cme", "cmo", "cms", "cna", "cns",
-  "cn", "co", "coo", "cota", "covid", "crna", "ct", "cto", "dc", "de",
-  "doh", "don", "do", "eeoc", "ehr", "emr", "emt", "eod", "eow", "er",
-  "evp", "fda", "fl", "flsa", "fmla", "fte", "ft", "ga", "gme", "gm",
-  "hi", "hipaa", "hr", "hris", "huc", "ia", "ic", "icu", "id", "il",
-  "in", "iv", "jcaho", "kpi", "ks", "ky", "la", "li", "lmft", "lmsw",
-  "loa", "lpc", "lpn", "lcsw", "lt", "ltac", "lvn", "ma", "md", "me",
-  "mi", "mlt", "mn", "mo", "ms", "msp", "mt", "nc", "nd", "nda", "ne",
-  "nh", "nicu", "nj", "nm", "noc", "np", "nrp", "nv", "ny", "oh", "ok",
-  "or", "osha", "ot", "pa", "pacu", "pals", "pc", "pct", "pe", "picu",
-  "ppc", "prn", "pt", "pto", "rd", "rfp", "ri", "rn", "rpo", "rt", "rto",
-  "sc", "sd", "sla", "slp", "smb", "snf", "stop", "start", "svp", "ta",
-  "tjc", "tn", "tx", "ut", "va", "vt", "vms", "vp", "wa", "wfh", "wi",
-  "wv", "wy", "yoy", "ltc", "uc", "urgent care", "ak"
+  "acls","ada","al","alf","ama","ana","ar","ats","az","bgc",
+  "bls","ca","cdc","cm","cma","cme","cmo","cms","cna","cns",
+  "cn","co","coo","cota","covid","crna","ct","cto","dc","de",
+  "doh","don","do","eeoc","ehr","emr","emt","eod","eow","er",
+  "evp","fda","fl","flsa","fmla","fte","ft","ga","gme","gm",
+  "hi","hipaa","hr","hris","huc","ia","ic","icu","id","il",
+  "in","iv","jcaho","kpi","ks","ky","la","li","lmft","lmsw",
+  "loa","lpc","lpn","lcsw","lt","ltac","lvn","ma","md","me",
+  "mi","mlt","mn","mo","ms","msp","mt","nc","nd","nda","ne",
+  "nh","nicu","nj","nm","noc","np","nrp","nv","ny","oh","ok",
+  "or","osha","ot","pa","pacu","pals","pc","pct","pe","picu",
+  "ppc","prn","pt","pto","rd","rfp","ri","rn","rpo","rt","rto",
+  "sc","sd","sla","slp","smb","snf","stop","start","svp","ta",
+  "tjc","tn","tx","ut","va","vt","vms","vp","wa","wfh","wi",
+  "wv","wy","yoy","ltc","uc","urgent care","ak"
 ];
 
 function convertToCSV(data) {
@@ -365,12 +365,11 @@ function parseCSV(csvText) {
 const fileInput = document.getElementById("fileInput");
 fileInput.addEventListener("change", () => {
   if (!fileInput.files.length) {
-    alert("No file selected.");
     return;
   }
   const file = fileInput.files[0];
   const reader = new FileReader();
-  reader.onload = function (e) {
+  reader.onload = function(e) {
     try {
       const extension = (file.name.split(".").pop() || "").toLowerCase();
       if (extension === "json") {
