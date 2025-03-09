@@ -1,5 +1,6 @@
 function toggleMenu() {
 	const navLinks = document.getElementById('nav-links');
-	const hamburger = document.getElementById('hamburger');
+	const body = document.body;
 	navLinks.classList.toggle('open');
+	body.classList.toggle('menu-open');
 }

@@ -1,16 +1,13 @@
-// Updates the theme icon based on the current theme.
 function updateThemeIcon() {
 	const theme = document.documentElement.getAttribute('data-theme');
 	const iconElement = document.getElementById('theme-icon');
 	if (theme === 'dark') {
-		// Moon icon for dark theme.
 		iconElement.innerHTML = `
 			<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" class="icon-moon">
 				<path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
 			</svg>
 		`;
 	} else {
-		// Sun icon for light theme (using your existing SVG code).
 		iconElement.innerHTML = `
 			<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 32 32" fill="currentColor" class="icon-theme-toggle">
 				<clipPath id="theme-toggle-cutout">
@@ -25,12 +22,10 @@ function updateThemeIcon() {
 	}
 }
 
-// Check for a saved theme on load (default to dark if none)
 const storedTheme = localStorage.getItem('theme') || 'dark';
 document.documentElement.setAttribute('data-theme', storedTheme);
 document.addEventListener('DOMContentLoaded', updateThemeIcon);
 
-// Toggle theme and update icon
 function toggleTheme() {
 	const currentTheme = document.documentElement.getAttribute('data-theme');
 	const newTheme = currentTheme === 'dark' ? 'light' : 'dark';

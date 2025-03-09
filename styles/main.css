@@ -49,6 +49,18 @@ header nav ul li {
 	transition: transform 0.3s ease, opacity 0.3s ease;
 }
 
+body.menu-open details {
+	visibility: hidden;
+}
+
+body.menu-open details summary {
+	pointer-events: none;
+}
+
+body.menu-open details summary::before {
+	content: none;
+}
+
 @media (max-width: 600px) {
 	#hamburger {
 		display: flex;
@@ -58,6 +70,7 @@ header nav ul li {
 		display: none;
 		flex-direction: column;
 		width: 100%;
+		height: 100%;
 		align-items: center;
 		background-color: var(--nav-bg);
 		position: absolute;
