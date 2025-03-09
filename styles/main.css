@@ -81,6 +81,7 @@ body.menu-open details summary::before {
 		top: 50px;
 		left: 0;
 		padding: 1rem 0;
+		font-size: 1.5rem;
 	}
 
 	#nav-links.open {
@@ -102,4 +103,16 @@ body.menu-open details summary::before {
 	#nav-links.open+#hamburger .bar:nth-child(3) {
 		transform: rotate(-45deg);
 	}
+}
+
+#theme-icon svg {
+    width: 24px;
+    height: 24px;
+}
+
+@media (max-width: 600px) {
+    #theme-icon svg {
+        width: 32px;
+        height: 32px;
+    }
 }
