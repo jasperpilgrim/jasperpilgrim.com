@@ -63,7 +63,7 @@ body.menu-open details summary::before {
 
 @media (max-width: 600px) {
 	h1 {
-		font-size: 1.85rem;
+		font-size: 1.5rem;
 	}
 
 	#hamburger {
