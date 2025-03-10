@@ -18,22 +18,22 @@ html[data-theme="light"] {
 	--nav-bg: var(--nav-bg-light);
 }
 
-header nav {
+/* header nav {
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
-}
+} */
 
-header nav ul {
+/* header nav ul {
 	list-style: none;
 	padding: 0;
 	display: flex;
 	margin: 0;
-}
+} */
 
-header nav ul li {
+/* header nav ul li {
 	padding: 0.5rem 1rem;
-}
+} */
 
 #hamburger {
 	display: none;
