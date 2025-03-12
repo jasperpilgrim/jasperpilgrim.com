@@ -42,9 +42,9 @@ html[data-theme="light"] {
 }
 
 #hamburger .bar {
-	width: 30px;
-	height: 4px;
-	margin: 5px 0;
+	width: 24px;
+	height: 3px;
+	margin: 4px 0;
 	background-color: var(--hamburger-bg);
 	transition: transform 0.3s ease, opacity 0.3s ease;
 }
@@ -81,7 +81,7 @@ body.menu-open details summary::before {
 		top: 50px;
 		left: 0;
 		padding: 1rem 0;
-		font-size: 1.5rem;
+		/* font-size: 1.5rem; */
 	}
 
 	#nav-links.open {
@@ -89,7 +89,7 @@ body.menu-open details summary::before {
 	}
 
 	header nav ul li {
-		padding: 1rem;
+		/* padding: 1rem; */
 	}
 
 	#nav-links.open+#hamburger .bar:nth-child(1) {
@@ -105,7 +105,7 @@ body.menu-open details summary::before {
 	}
 }
 
-#theme-icon svg {
+/* #theme-icon svg {
     width: 24px;
     height: 24px;
 }
@@ -115,4 +115,4 @@ body.menu-open details summary::before {
         width: 32px;
         height: 32px;
     }
-}
+} */
