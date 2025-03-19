@@ -12,15 +12,18 @@ label {
 #outputArea {
   width: 100%;
   margin: 1rem 0;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
 table {
   width: 100%;
   border-collapse: collapse;
   table-layout: fixed;
-  word-wrap: break-word;
-  background-color: #1F1F1F;
+  background-color: #1E1E22;
   color: #E8E8E8;
+  font-size: 0.75rem;
+  min-width: 800px;
 }
 
 table, th, td {
@@ -28,18 +31,46 @@ table, th, td {
 }
 
 th, td {
+  min-width: 100px;
+}
+
+th {
+  padding: 8px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  background-color: #1E1E22;
+  position: relative;
+}
+
+/* Show the full text as a tooltip on hover */
+th:hover::after {
+  content: attr(title);
+  position: absolute;
+  left: 0;
+  top: 100%;
+  background-color: #2D3138;
+  color: #E8E8E8;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 0.875rem;
+  white-space: nowrap;
+  z-index: 1000;
+  pointer-events: none;
+}
+
+td {
   padding: 8px;
   text-align: left;
+  background-color: #1E1E22;
   word-wrap: break-word;
-  max-width: 200px;
   overflow-wrap: break-word;
-  background-color: #1F1F1F;
-  font-size: 0.875rem;  /* 14px */
 }
 
 th:first-child,
 td:first-child {
   width: 50px;
+  min-width: 50px;
   text-align: center;
 }
 
