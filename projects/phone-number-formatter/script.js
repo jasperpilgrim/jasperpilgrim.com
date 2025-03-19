@@ -8,17 +8,38 @@ const whitelist = ["3035552314", "9195554832", "8046657213"];
 
 function formatNumbers() {
   let inputText = inputNumbers.value || "";
-  inputText = inputText.replace(/\r?\n/g, " ");
-  const candidateRegex = /\(\d{3}\)\s?\d{3}-\d{4}|[+\(]?\d[\d\-\(\) ]{7,}\d/g;
-  const candidates = inputText.match(candidateRegex) || [];
-  const rawNumbers = [];
-  for (const candidate of candidates) {
-    let cleaned = candidate.replace(/[^\d+]/g, "");
+  inputText = inputText
+    .replace(/\r?\n/g, " ")
+    .replace(/[•*]/g, "")  // Remove bullets and asterisks
+    .trim();
+
+  // US and UK number patterns
+  const usFormattedRegex = /\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})/g;
+  const usPlainRegex = /\b1?\d{10}\b/g;
+  const ukRegex = /\b(07[\d]{3}[\s-]?\d{6})\b/g;
+  
+  const candidates = [
+    ...(inputText.match(usFormattedRegex) || []),
+    ...(inputText.match(usPlainRegex) || []),
+    ...(inputText.match(ukRegex) || [])
+  ];
+
+  const rawNumbers = new Set();  // Use Set to prevent duplicates
+  for (const match of candidates) {
+    let cleaned = match.replace(/[^\d+]/g, "");
     if (whitelist.includes(cleaned)) continue;
-    if (cleaned.startsWith("++")) {
-      cleaned = cleaned.replace(/^\++/, "+");
+
+    // Handle UK numbers (starting with 07)
+    if (cleaned.startsWith("07") && cleaned.length === 11) {
+      cleaned = "+44" + cleaned.substring(1); // Convert 07... to +447...
     }
-    rawNumbers.push(cleaned);
+    // Handle US numbers
+    else if (cleaned.length === 11 && cleaned.startsWith("1")) {
+      cleaned = "+" + cleaned;
+    } else if (cleaned.length === 10) {
+      cleaned = "+1" + cleaned;
+    }
+    rawNumbers.add(cleaned);
   }
 
   const parsedNumbers = [];
