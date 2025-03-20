@@ -145,7 +145,6 @@ label {
   width: 100%;
   font-size: 0.8rem;
   background-color: white;
-  min-width: 800px;
 }
 
 .view-window th,
@@ -156,7 +155,6 @@ label {
   vertical-align: top;
   background-color: white;
   color: black;
-  min-width: 100px;
 }
 
 .view-window thead th {
@@ -176,7 +174,8 @@ label {
 
 @media only screen and (max-width: 800px) {
   .view-window table {
-    min-width: unset;
+    display: block;
+    width: 100%;
   }
 
   .view-window table,
