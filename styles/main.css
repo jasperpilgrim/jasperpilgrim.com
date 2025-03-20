@@ -1,15 +1,25 @@
 html {
 	max-width: 50rem;
 	margin: 0 auto;
-	font-size: 0.95rem;
+	font-size: 1rem;
+}
+
+body {
+	padding: 1rem;
+}
+
+header {
+	margin: 0;
+	padding: 0;
 }
 
 header nav {
 	display: flex;
 	justify-content: flex-start;
 	align-items: center;
-	padding: 1rem 0;
+	padding: 0;
 	position: relative;
+	margin-bottom: 1rem;
 }
 
 #nav-links {
@@ -20,8 +30,20 @@ header nav {
 	gap: 1rem;
 }
 
+nav ul {
+	padding: 0;
+	margin: 0;
+}
+
+nav ul li {
+	padding: 0;
+	margin: 0;
+}
+
 #nav-links a {
 	text-decoration: none;
+	padding: 0;
+	margin: 0;
 }
 
 #hamburger {
@@ -30,8 +52,9 @@ header nav {
 	cursor: pointer;
 	z-index: 1001;
 	position: absolute;
-	left: 1rem;
-	top: 1rem;
+	left: 0;
+	top: 50%;
+	transform: translateY(-50%);
 }
 
 #hamburger .bar {
@@ -52,6 +75,16 @@ body.menu-open details summary {
 
 body.menu-open details summary::before {
 	content: none;
+}
+
+main {
+	margin: 0;
+	padding: 0;
+}
+
+h1 {
+	margin: 0;
+	margin-bottom: 1rem;
 }
 
 @media (max-width: 600px) {

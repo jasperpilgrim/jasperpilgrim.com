@@ -280,7 +280,7 @@ function downloadCSV() {
   const url = window.URL.createObjectURL(blob);
   const a = document.createElement('a');
   a.setAttribute('href', url);
-  a.setAttribute('download', 'output.csv');
+  a.setAttribute('download', 'postman-twilio-JSON2CSV_output.csv');
   a.click();
   window.URL.revokeObjectURL(url);
 }
@@ -404,10 +404,6 @@ function updateView() {
     const thead = viewWindow.document.createElement('thead');
     const headerRow2 = viewWindow.document.createElement('tr');
     
-    const numTh = viewWindow.document.createElement('th');
-    numTh.textContent = '#';
-    headerRow2.appendChild(numTh);
-    
     selectedKeys.forEach(key => {
         const th = viewWindow.document.createElement('th');
         th.textContent = key;
@@ -420,11 +416,6 @@ function updateView() {
     const tbody = viewWindow.document.createElement('tbody');
     allRecords.forEach((record, index) => {
         const tr = viewWindow.document.createElement('tr');
-        
-        const numTd = viewWindow.document.createElement('td');
-        numTd.setAttribute('data-label', '#');
-        numTd.textContent = index + 1;
-        tr.appendChild(numTd);
         
         selectedKeys.forEach(key => {
             const td = viewWindow.document.createElement('td');
