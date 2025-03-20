@@ -88,10 +88,6 @@ h1 {
 }
 
 @media (max-width: 600px) {
-	h1 {
-		font-size: 1.5rem;
-	}
-
 	#hamburger {
 		display: flex;
 	}
@@ -133,15 +129,3 @@ h1 {
 		transform: translateY(-11px) rotate(-45deg);
 	}
 }
-
-/* #theme-icon svg {
-    width: 24px;
-    height: 24px;
-}
-
-@media (max-width: 600px) {
-    #theme-icon svg {
-        width: 32px;
-        height: 32px;
-    }
-} */
