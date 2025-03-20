@@ -3,7 +3,7 @@
 
 <head>
   <meta charset="utf-8">
-  <title>Postman / Twilio - JSON 2 CSV</title>
+  <title>Postman/Twilio - JSON 2 CSV | Jasper Pilgrim</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.classless.indigo.min.css">
   <link rel="stylesheet" href="/styles/postman-twilio-json2csv.css">
   <link rel="stylesheet" href="/styles/main.css">
@@ -26,18 +26,17 @@
     </nav>
   </header>
   <main>
-    <h1>Postman / Twilio - JSON 2 CSV</h1>
+    <h1>Postman/Twilio - JSON 2 CSV</h1>
     <input type="file" id="jsonFileInput" accept=".json" />
     <textarea id="jsonPasteInput" rows="6" cols="80" placeholder="Or paste JSON here..."></textarea>
     <div id="keysContainer" style="display: none;">
       <p>No keys found. Upload or paste your JSON first.</p>
     </div>
     <div id="linksContainer">
-      <a href="#" id="downloadLink" onclick="downloadCSV()">Download CSV</a>
       <a href="#" id="toggleKeysBtn" onclick="toggleKeys()">Show/Hide Keys</a>
-      <a href="#" id="copyLink" onclick="copyToClipboard()">Copy to Clipboard</a>
+      <a href="#" id="viewLink" onclick="viewInBrowser()">View in Browser</a>
+      <a href="#" id="downloadLink" onclick="downloadCSV()">Download CSV</a>
     </div>
-    <div id="outputArea"></div>
   </main>
   <script src="script.js"></script>
   <script src="/toggleMenu.js"></script>
