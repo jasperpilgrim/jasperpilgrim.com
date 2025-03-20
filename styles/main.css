@@ -1,28 +1,14 @@
 html {
 	max-width: 50rem;
 	margin: 0 auto;
-	font-size: 1rem;
-	--hamburger-bg-dark: whitesmoke;
-	--hamburger-bg-light: #111111;
-	--nav-bg-dark: #131720;
-	--nav-bg-light: #ffffff;
-}
-
-html[data-theme="dark"] {
-	--hamburger-bg: var(--hamburger-bg-dark);
-	--nav-bg: var(--nav-bg-dark);
-}
-
-html[data-theme="light"] {
-	--hamburger-bg: var(--hamburger-bg-light);
-	--nav-bg: var(--nav-bg-light);
+	font-size: 0.95rem;
 }
 
 header nav {
 	display: flex;
-	justify-content: space-between;
+	justify-content: flex-start;
 	align-items: center;
-	padding: 1rem;
+	padding: 1rem 0;
 	position: relative;
 }
 
@@ -34,18 +20,26 @@ header nav {
 	gap: 1rem;
 }
 
+#nav-links a {
+	/* background: #2c2e36; */
+	text-decoration: none;
+}
+
 #hamburger {
 	display: none;
 	flex-direction: column;
 	cursor: pointer;
 	z-index: 1001;
+	position: absolute;
+	left: 1rem;
+	top: 1rem;
 }
 
 #hamburger .bar {
 	width: 24px;
 	height: 3px;
 	margin: 4px 0;
-	background-color: var(--hamburger-bg);
+	background-color: whitesmoke;
 	transition: transform 0.3s ease, opacity 0.3s ease;
 }
 
@@ -75,7 +69,7 @@ body.menu-open details summary::before {
 		flex-direction: column;
 		width: 100%;
 		align-items: center;
-		background-color: var(--nav-bg);
+		background-color: #131720;
 		position: fixed;
 		top: 0;
 		left: 0;
