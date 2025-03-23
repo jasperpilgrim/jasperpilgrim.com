@@ -1,7 +1,6 @@
 let jsonData;
 let allRecords = [];
 let unionKeys = [];
-let viewWindow = null;
 
 const fileInput = document.getElementById("jsonFileInput");
 const pasteInput = document.getElementById("jsonPasteInput");
@@ -9,45 +8,19 @@ const keysContainer = document.getElementById("keysContainer");
 const linksContainer = document.getElementById("linksContainer");
 const toggleKeysBtn = document.getElementById("toggleKeysBtn");
 const downloadLink = document.getElementById("downloadLink");
-const viewLink = document.getElementById("viewLink");
 
 function clearFileInput() {
   fileInput.value = '';
   fileInput.blur();
 }
 
-function selectAll(checked, container, isViewWindow = false) {
+function selectAll(checked, container) {
   const checkboxes = container.querySelectorAll("input[type='checkbox']");
   checkboxes.forEach(cb => {
     if (cb.value !== 'select-all') {
       cb.checked = checked;
-      if (!isViewWindow) {
-        // Update the view window checkbox if it exists
-        if (viewWindow && !viewWindow.closed) {
-          const viewCheckbox = viewWindow.document.querySelector(`input[type="checkbox"][value="${cb.value}"]`);
-          if (viewCheckbox) {
-            viewCheckbox.checked = checked;
-          }
-        }
-      } else {
-        // Update the main window checkbox
-        const mainCheckbox = document.querySelector(`input[type="checkbox"][value="${cb.value}"]`);
-        if (mainCheckbox) {
-          mainCheckbox.checked = checked;
-        }
-      }
     }
   });
-  if (!isViewWindow && viewWindow && !viewWindow.closed) {
-    // Update view window's select all checkbox
-    const viewSelectAll = viewWindow.document.querySelector('input[value="select-all"]');
-    if (viewSelectAll) {
-      viewSelectAll.checked = checked;
-    }
-  }
-  if (viewWindow && !viewWindow.closed) {
-    updateView();
-  }
 }
 
 function updateSelectAllState(container) {
@@ -93,6 +66,7 @@ function updateKeysUI() {
     selectAllCheckbox.value = "select-all";
     selectAllCheckbox.addEventListener("change", () => {
       selectAll(selectAllCheckbox.checked, keysContainer);
+      updateButtonsState();
     });
     selectAllLabel.appendChild(selectAllCheckbox);
     selectAllLabel.appendChild(document.createTextNode("Select All"));
@@ -107,7 +81,7 @@ function updateKeysUI() {
       checkbox.checked = (k === "phone_number" || k === "carrier.name" || k === "sid");
       checkbox.addEventListener("change", () => {
         updateSelectAllState(keysContainer);
-        updateView();
+        updateButtonsState();
       });
       label.appendChild(checkbox);
       label.appendChild(document.createTextNode(k));
@@ -115,6 +89,7 @@ function updateKeysUI() {
     });
 
     updateSelectAllState(keysContainer);
+    updateButtonsState();
   } else {
     const p = document.createElement("p");
     p.textContent = "No keys found.";
@@ -124,11 +99,11 @@ function updateKeysUI() {
 }
 
 function toggleKeys() {
-  keysContainer.style.display = keysContainer.style.display === "none" ? "block" : "none";
+  keysContainer.style.display = keysContainer.style.display === "none" ? "grid" : "none";
 }
 
 function getSelectedKeys() {
-  const checkboxes = keysContainer.querySelectorAll("input[type='checkbox']");
+  const checkboxes = keysContainer.querySelectorAll("input[type='checkbox']:not([value='select-all'])");
   let selected = [];
   checkboxes.forEach(cb => {
     if (cb.checked) selected.push(cb.value);
@@ -172,9 +147,7 @@ function parseJSONInput(jsonText) {
       jsonData = null;
     }
     updateKeysUI();
-    if (viewWindow && !viewWindow.closed) {
-      updateView();
-    }
+    updateButtonsState();
   } catch (err) {
     alert("Error parsing JSON: " + err);
     jsonData = null;
@@ -223,6 +196,7 @@ function generateTable() {
     tr.appendChild(numTd);
     selectedKeys.forEach(k => {
       const td = document.createElement("td");
+      td.setAttribute("data-label", k);
       td.textContent = record[k] !== undefined ? (record[k] === null ? "null" : record[k]) : "";
       tr.appendChild(td);
     });
@@ -285,189 +259,6 @@ function downloadCSV() {
   window.URL.revokeObjectURL(url);
 }
 
-function updateView() {
-    if (!viewWindow || viewWindow.closed) {
-        return;
-    }
-
-    const selectedKeys = getSelectedKeys();
-    const existingKeysContainer = viewWindow.document.querySelector('.keys-container');
-    const keysVisible = existingKeysContainer ? existingKeysContainer.style.display === 'grid' : false;
-
-    // Clear the view window's content
-    viewWindow.document.body.innerHTML = '';
-
-    // Create and append header
-    const headerRow = viewWindow.document.createElement('div');
-    headerRow.className = 'header-row';
-    
-    const title = viewWindow.document.createElement('h2');
-    title.textContent = 'Postman/Twilio - JSON 2 CSV Output';
-    headerRow.appendChild(title);
-    viewWindow.document.body.appendChild(headerRow);
-
-    // Create and append controls
-    const controlsRow = viewWindow.document.createElement('div');
-    controlsRow.className = 'controls-row';
-
-    const toggleKeysBtn = viewWindow.document.createElement('a');
-    toggleKeysBtn.className = 'toggle-keys-btn';
-    toggleKeysBtn.textContent = 'Show/Hide Keys';
-    toggleKeysBtn.href = '#';
-    toggleKeysBtn.onclick = (e) => {
-        e.preventDefault();
-        const keysContainer = viewWindow.document.querySelector('.keys-container');
-        if (keysContainer) {
-            keysContainer.style.display = keysContainer.style.display === 'none' ? 'grid' : 'none';
-        }
-    };
-
-    const downloadLink = viewWindow.document.createElement('a');
-    downloadLink.className = 'download-link';
-    downloadLink.textContent = 'Download CSV';
-    downloadLink.href = '#';
-    downloadLink.onclick = (e) => {
-        e.preventDefault();
-        const csvContent = generateCSV();
-        const blob = new Blob([csvContent], { type: 'text/csv' });
-        const url = viewWindow.URL.createObjectURL(blob);
-        const a = viewWindow.document.createElement('a');
-        a.href = url;
-        a.download = 'output.csv';
-        a.click();
-        viewWindow.URL.revokeObjectURL(url);
-    };
-
-    controlsRow.appendChild(toggleKeysBtn);
-    controlsRow.appendChild(downloadLink);
-    viewWindow.document.body.appendChild(controlsRow);
-
-    // Create and append keys container
-    const keysContainer = viewWindow.document.createElement('div');
-    keysContainer.className = 'keys-container';
-    keysContainer.style.display = keysVisible ? 'grid' : 'none';
-
-    const keysTitle = viewWindow.document.createElement('p');
-    keysTitle.textContent = 'Select keys to include:';
-    keysContainer.appendChild(keysTitle);
-
-    const selectAllLabel = viewWindow.document.createElement('label');
-    const selectAllCheckbox = viewWindow.document.createElement('input');
-    selectAllCheckbox.type = 'checkbox';
-    selectAllCheckbox.value = 'select-all';
-    selectAllCheckbox.addEventListener('change', () => {
-      selectAll(selectAllCheckbox.checked, keysContainer, true);
-    });
-    selectAllLabel.appendChild(selectAllCheckbox);
-    selectAllLabel.appendChild(viewWindow.document.createTextNode('Select All'));
-    selectAllLabel.style.fontWeight = 'bold';
-    keysContainer.appendChild(selectAllLabel);
-
-    unionKeys.forEach(key => {
-        const label = viewWindow.document.createElement('label');
-        const checkbox = viewWindow.document.createElement('input');
-        checkbox.type = 'checkbox';
-        checkbox.value = key;
-        checkbox.checked = selectedKeys.includes(key);
-        checkbox.addEventListener('change', () => {
-            const mainCheckbox = document.querySelector(`input[type="checkbox"][value="${key}"]`);
-            if (mainCheckbox) {
-                mainCheckbox.checked = checkbox.checked;
-            }
-            updateSelectAllState(keysContainer);
-            updateView();
-        });
-        label.appendChild(checkbox);
-        label.appendChild(viewWindow.document.createTextNode(key));
-        keysContainer.appendChild(label);
-    });
-
-    updateSelectAllState(keysContainer);
-    viewWindow.document.body.appendChild(keysContainer);
-
-    // Create table or message
-    if (!selectedKeys.length) {
-        const messageContainer = viewWindow.document.createElement('div');
-        messageContainer.style.textAlign = 'center';
-        messageContainer.style.padding = '2rem';
-        messageContainer.style.backgroundColor = '#f9f9f9';
-        messageContainer.style.border = '1px solid #ccc';
-        messageContainer.style.borderRadius = '4px';
-        messageContainer.style.margin = '1rem';
-        messageContainer.textContent = 'Please select at least one key to display data';
-        viewWindow.document.body.appendChild(messageContainer);
-        return;
-    }
-
-    // Create and append table with data
-    const table = viewWindow.document.createElement('table');
-    const thead = viewWindow.document.createElement('thead');
-    const headerRow2 = viewWindow.document.createElement('tr');
-    
-    selectedKeys.forEach(key => {
-        const th = viewWindow.document.createElement('th');
-        th.textContent = key;
-        headerRow2.appendChild(th);
-    });
-    
-    thead.appendChild(headerRow2);
-    table.appendChild(thead);
-    
-    const tbody = viewWindow.document.createElement('tbody');
-    allRecords.forEach((record, index) => {
-        const tr = viewWindow.document.createElement('tr');
-        
-        selectedKeys.forEach(key => {
-            const td = viewWindow.document.createElement('td');
-            td.setAttribute('data-label', key);
-            td.textContent = record[key] !== undefined ? (record[key] === null ? "null" : record[key]) : "";
-            tr.appendChild(td);
-        });
-        
-        tbody.appendChild(tr);
-    });
-    
-    table.appendChild(tbody);
-    viewWindow.document.body.appendChild(table);
-}
-
-function viewInBrowser() {
-    if (!jsonData || allRecords.length === 0) {
-        alert("No JSON data loaded!");
-        return;
-    }
-    const selectedKeys = getSelectedKeys();
-    if (selectedKeys.length === 0) {
-        alert("No keys selected!");
-        return;
-    }
-
-    if (viewWindow && !viewWindow.closed) {
-        viewWindow.focus();
-        return;
-    }
-
-    viewWindow = window.open('', '_blank');
-    viewWindow.document.write(`
-        <!DOCTYPE html>
-        <html>
-        <head>
-            <title>Postman/Twilio - JSON 2 CSV Output | Jasper Pilgrim</title>
-            <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <link rel="stylesheet" href="/styles/postman-twilio-json2csv.css">
-        </head>
-        <body class="view-window">
-        </body>
-        </html>
-    `);
-    viewWindow.document.close();
-    updateView();
-
-    viewWindow.addEventListener('beforeunload', () => {
-        viewWindow = null;
-    });
-}
-
 function copyToClipboard() {
   if (!jsonData || allRecords.length === 0) {
     alert("No CSV data available!");
@@ -478,6 +269,7 @@ function copyToClipboard() {
     alert("No keys selected!");
     return;
   }
+
   const csvRows = [];
   csvRows.push(selectedKeys.join("\t"));
   allRecords.forEach(record => {
@@ -496,8 +288,13 @@ function copyToClipboard() {
     csvRows.push(row.join("\t"));
   });
   const csvText = csvRows.join("\n");
+
   navigator.clipboard.writeText(csvText).then(() => {
-    alert("CSV data copied to clipboard!");
+    const copyLink = document.getElementById('copyLink');
+    if (copyLink) {
+      copyLink.classList.add('copy-success');
+      setTimeout(() => copyLink.classList.remove('copy-success'), 600);
+    }
   }).catch(err => {
     alert("Error copying data: " + err);
   });

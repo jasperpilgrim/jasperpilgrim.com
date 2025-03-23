@@ -4,10 +4,6 @@ html {
 	font-size: 1rem;
 }
 
-body {
-	padding: 1rem;
-}
-
 header {
 	margin: 0;
 	padding: 0;
@@ -77,16 +73,6 @@ body.menu-open details summary::before {
 	content: none;
 }
 
-main {
-	margin: 0;
-	padding: 0;
-}
-
-h1 {
-	margin: 0;
-	margin-bottom: 1rem;
-}
-
 @media (max-width: 600px) {
 	#hamburger {
 		display: flex;
@@ -128,5 +114,9 @@ h1 {
 
 	#nav-links.open + #hamburger .bar:nth-child(3) {
 		transform: translateY(-11px) rotate(-45deg);
+	}
+
+	body {
+		padding: 1rem;
 	}
 }
