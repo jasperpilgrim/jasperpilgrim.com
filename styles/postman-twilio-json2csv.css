@@ -95,6 +95,20 @@ thead th {
 }
 
 @media only screen and (max-width: 800px) {
+  #linksContainer {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  
+  #linksContainer a[role="button"] {
+    font-size: 0.75rem;
+    padding: 0.4rem 0.8rem;
+    margin: 0.25rem;
+    height: auto;
+    line-height: 1.2;
+    min-width: unset;
+  }
+  
   table {
     display: block;
     border: none;
