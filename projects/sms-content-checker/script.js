@@ -4,6 +4,7 @@ const smsContentInput = document.getElementById("smsContentInput");
 const smsContentWarnings = document.getElementById("smsContentWarnings");
 const smsContentHighlighted = document.getElementById("smsContentHighlighted");
 const warningsToggle = document.getElementById("smsContentWarningsToggle");
+const warningsToggleBtn = document.getElementById("warningsToggleBtn");
 
 const wordsToAvoid = [
   "cocaine", "kush", "ganja", "weed", "pot", "reefer", "pcp", "marijuana",
@@ -171,11 +172,15 @@ function getEnabledWarningTypes() {
 window.addEventListener("DOMContentLoaded", () => {
   segmentCountSpan.innerHTML = "(Segments: 0)";
   const isOpen = localStorage.getItem('warningsToggleOpen') === 'true';
-  document.getElementById('warningsToggle').open = isOpen;
+  warningsToggle.hidden = !isOpen;
+  warningsToggleBtn.setAttribute('aria-expanded', isOpen);
 });
 
-document.getElementById('warningsToggle').addEventListener('toggle', (event) => {
-  localStorage.setItem('warningsToggleOpen', event.target.open);
+warningsToggleBtn.addEventListener('click', () => {
+  const isExpanded = warningsToggleBtn.getAttribute('aria-expanded') === 'true';
+  warningsToggle.hidden = isExpanded;
+  warningsToggleBtn.setAttribute('aria-expanded', !isExpanded);
+  localStorage.setItem('warningsToggleOpen', !isExpanded);
 });
 
 smsContentInput.addEventListener("input", () => {

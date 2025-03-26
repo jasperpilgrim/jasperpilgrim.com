@@ -28,23 +28,23 @@
 	</header>
 	<main>
 		<h1>SMS Content Checker</h1>
-		<details id="warningsToggle">
-			<summary>Show/Hide Warnings</summary>
-			<div id="smsContentWarningsToggle">
-				<label><input type="checkbox" data-warning-type="characterLimit" checked> Emojis & Special Characters</label>
-				<label><input type="checkbox" data-warning-type="characterLimitExceeded" checked> Character Limit</label>
-				<label><input type="checkbox" data-warning-type="dollarSigns" checked> Dollar Signs</label>
-				<label><input type="checkbox" data-warning-type="exclamationPoints" checked> Exclamation Points</label>
-				<label><input type="checkbox" data-warning-type="urlsAndAtSymbols" checked> URLs & "@" Symbols</label>
-				<label><input type="checkbox" data-warning-type="wordsToAvoid" checked> Words & Phrases to Avoid</label>
-				<label><input type="checkbox" data-warning-type="uppercaseWords" checked> Uppercase Words</label>
-			</div>
-		</details>
 		<textarea id="smsContentInput" rows="6" cols="80" placeholder="Enter your SMS content here"></textarea>
-		<output id="charCount">
-			<span id="charLengthLimit">0/160</span>
-			<span id="segmentCount">(Segments: 0)</span>
-		</output>
+		<div id="textareaControls">
+			<button id="warningsToggleBtn" aria-expanded="false">Show/Hide Warnings</button>
+			<output id="charCount">
+				<span id="charLengthLimit">0/160</span>
+				<span id="segmentCount">(Segments: 0)</span>
+			</output>
+		</div>
+		<div id="smsContentWarningsToggle" hidden>
+			<label><input type="checkbox" data-warning-type="characterLimit" checked> Emojis & Special Characters</label>
+			<label><input type="checkbox" data-warning-type="characterLimitExceeded" checked> Character Limit</label>
+			<label><input type="checkbox" data-warning-type="dollarSigns" checked> Dollar Signs</label>
+			<label><input type="checkbox" data-warning-type="exclamationPoints" checked> Exclamation Points</label>
+			<label><input type="checkbox" data-warning-type="urlsAndAtSymbols" checked> URLs & "@" Symbols</label>
+			<label><input type="checkbox" data-warning-type="wordsToAvoid" checked> Words & Phrases to Avoid</label>
+			<label><input type="checkbox" data-warning-type="uppercaseWords" checked> Uppercase Words</label>
+		</div>
 		<div id="smsContentHighlighted"></div>
 		<div id="smsContentWarnings"></div>
 		<script type="module" src="script.js"></script>
