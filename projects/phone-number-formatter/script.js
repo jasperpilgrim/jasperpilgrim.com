@@ -6,6 +6,16 @@ const copyMessage = document.getElementById("copyMessage");
 const phoneUtil = libphonenumber.PhoneNumberUtil.getInstance();
 const whitelist = ["3035552314", "9195554832", "8046657213"];
 
+const COUNTRY_CODES = {
+  "+44": "UK",
+  "+33": "France",
+  "+353": "Ireland",
+  "+41": "Switzerland",
+  "+46": "Sweden",
+  "+39": "Italy",
+  "+1": "US"
+};
+
 function formatNumbers() {
   let inputText = inputNumbers.value || "";
   inputText = inputText
@@ -17,7 +27,7 @@ function formatNumbers() {
   const usFormattedRegex = /\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})/g;
   const usPlainRegex = /\b1?\d{10}\b/g;
   const ukRegex = /\b(07[\d]{3}[\s-]?\d{6})\b/g;
-  
+
   const candidates = [
     ...(inputText.match(usFormattedRegex) || []),
     ...(inputText.match(usPlainRegex) || []),
@@ -110,41 +120,43 @@ function formatNumbers() {
       <div class="summary-item">Unique (<span class="count">${uniqueCount}</span>)</div>
       <div class="summary-item">
         Duplicates (<span class="count">${duplicatesCount}</span>)
-        <input type="checkbox" id="showDuplicates" ${showDuplicates ? "checked" : ""} style="float: right;">
+        <input type="checkbox" id="showDuplicates" ${showDuplicates ? "checked" : ""}>
       </div>
     </div>
     <div class="summary-row">
-      <div class="summary-item">US (<span class="count">${counts["US"]}</span>)</div>
-      <div class="summary-item">UK (<span class="count">${counts["UK"]}</span>)</div>
-      <div class="summary-item">Ireland (<span class="count">${counts["Ireland"]}</span>)</div>
-      <div class="summary-item">France (<span class="count">${counts["France"]}</span>)</div>
-      <div class="summary-item">Switzerland (<span class="count">${counts["Switzerland"]}</span>)</div>
-      <div class="summary-item">Sweden (<span class="count">${counts["Sweden"]}</span>)</div>
-      <div class="summary-item">Italy-WIP (<span class="count">${counts["Italy"]}</span>)</div>
+      ${Object.entries(counts)
+      .map(([country, count]) => `
+          <div class="summary-item">
+            ${country === "Italy" ? "Italy-WIP" : country} (<span class="count">${count}</span>)
+          </div>
+        `)
+      .join("")}
     </div>
   `;
   document.getElementById("summary").innerHTML = summaryHTML;
   document.getElementById("showDuplicates")?.addEventListener("change", formatNumbers);
 }
 
-function copyToClipboard() {
-  const range = document.createRange();
-  range.selectNode(outputNumbers);
-  window.getSelection().removeAllRanges();
-  window.getSelection().addRange(range);
-  document.execCommand("copy");
-  window.getSelection().removeAllRanges();
-  copyMessage.style.display = "inline";
-  copyMessage.textContent = "Copied!";
-  outputNumbers.classList.add("copied-highlight");
-  setTimeout(() => {
-    copyMessage.style.display = "none";
-    outputNumbers.classList.remove("copied-highlight");
-  }, 1500);
-}
+async function copyToClipboard() {
+  try {
+    const numbers = outputNumbers.innerHTML
+      .split('<br>')
+      .map(num => num.replace(/<\/?span[^>]*>/g, ''))
+      .filter(num => num.trim());
 
-outputNumbers.addEventListener("click", copyToClipboard);
-window.formatNumbers = formatNumbers;
+    const textToCopy = numbers.join('\n');
+
+    await navigator.clipboard.writeText(textToCopy);
+    copyMessage.style.display = "inline";
+    outputNumbers.classList.add("copied-highlight");
+    setTimeout(() => {
+      copyMessage.style.display = "none";
+      outputNumbers.classList.remove("copied-highlight");
+    }, 1500);
+  } catch (err) {
+    console.error('Failed to copy text: ', err);
+  }
+}
 
 function tryPhoneUtilParse(cleaned) {
   try {
@@ -207,14 +219,10 @@ function tryDefaultRegionParse(cleaned) {
 
 function detectCountry(e164) {
   if (!e164 || e164.startsWith("Invalid:") || e164.startsWith("Error:")) return "";
-  if (e164.startsWith("+44")) return "UK";
-  if (e164.startsWith("+33")) return "France";
-  if (e164.startsWith("+353")) return "Ireland";
-  if (e164.startsWith("+41")) return "Switzerland";
-  if (e164.startsWith("+46")) return "Sweden";
-  if (e164.startsWith("+39")) return "Italy";
-  if (e164.startsWith("+1")) return "US";
-  return "";
+  return Object.entries(COUNTRY_CODES).find(([code]) => e164.startsWith(code))?.[1] || "";
 }
 
+// Event Listeners
+inputNumbers.addEventListener("input", formatNumbers);
+outputNumbers.addEventListener("click", copyToClipboard);
 document.addEventListener("DOMContentLoaded", formatNumbers);
