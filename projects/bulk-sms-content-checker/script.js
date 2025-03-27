@@ -194,63 +194,6 @@ function excludeColumnsFromLog(log) {
   return newLog;
 }
 
-function openTableInNewWindow(processedLogs) {
-  const newWin = window.open("", "_blank");
-  newWin.document.write(`
-    <!DOCTYPE html>
-    <html>
-    <head>
-      <title>Bulk SMS Content Checker Output</title>
-      <style>
-        body {
-          font-family: system-ui, -apple-system, sans-serif;
-          margin: 2rem;
-          line-height: 1.5;
-          color: #11191f;
-        }
-        table {
-          width: 100%;
-          border-collapse: collapse;
-          margin: 1rem 0;
-          font-size: 0.875rem;
-        }
-        th, td {
-          padding: 0.75rem;
-          text-align: left;
-          border: 1px solid #d1d5db;
-        }
-        thead {
-          background-color: #f3f4f6;
-        }
-        .has-warnings {
-          background-color: #fef2f2;
-        }
-        td[data-label="body"],
-        td[data-label="Body"] {
-          max-width: 400px;
-          word-wrap: break-word;
-        }
-      </style>
-    </head>
-    <body>
-      <h1>SMS Content Check Results</h1>
-      <table>
-        <thead>
-          <tr>${Object.keys(processedLogs[0]).map(header => `<th>${header}</th>`).join("")}</tr>
-        </thead>
-        <tbody>
-          ${processedLogs.map(log => `
-            <tr class="${log.warnings ? 'has-warnings' : ''}">
-              ${Object.values(log).map(value => `<td>${value}</td>`).join("")}
-            </tr>
-          `).join("")}
-        </tbody>
-      </table>
-    </body>
-    </html>
-  `);
-}
-
 function processLogs(logs) {
   logs = logs.map(excludeColumnsFromLog);
   const enabledWarningTypes = getEnabledWarningTypes();
@@ -288,12 +231,6 @@ function processLogs(logs) {
     const downloadLink = document.getElementById("downloadLink");
     downloadLink.href = url;
     downloadLink.style.display = "inline-block";
-    const viewTableLink = document.getElementById("viewTableLink");
-    viewTableLink.style.display = "inline-block";
-    viewTableLink.onclick = e => {
-      e.preventDefault();
-      openTableInNewWindow(processedLogs);
-    };
   }
 }
 
