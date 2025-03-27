@@ -23,14 +23,14 @@ const columnsToExclude = [
 ];
 
 const wordsToAvoid = [
-  "cocaine","kush","ganja","weed","pot","reefer","pcp","marijuana",
-  "dope","acid","thc","cash","bonus","spam","deal","free",
-  "guaranteed","urgent","benjamins","exclusive"
+  "cocaine", "kush", "ganja", "weed", "pot", "reefer", "pcp", "marijuana",
+  "dope", "acid", "thc", "cash", "bonus", "spam", "deal", "free",
+  "guaranteed", "urgent", "benjamins", "exclusive"
 ];
 
 const phrasesToAvoid = [
-  "apply now","take action","act now","limited time","call now",
-  "no strings attached","no credit check","hey there","hi there"
+  "apply now", "take action", "act now", "limited time", "call now",
+  "no strings attached", "no credit check", "hey there", "hi there"
 ];
 
 function checkEmojisAndSpecialCharacters(content) {
@@ -73,21 +73,21 @@ const uppercaseWordsRegex = /\b[A-Z]{2,}\b/g;
 const combinedAvoidRegex = new RegExp(`\\b(${[...processedWordsToAvoid, ...phrasesToAvoid].join("|")})\\b`, "gi");
 
 const whitelist = [
-  "acls","ada","al","alf","ama","ana","ar","ats","az","bgc",
-  "bls","ca","cdc","cm","cma","cme","cmo","cms","cna","cns",
-  "cn","co","coo","cota","covid","crna","ct","cto","dc","de",
-  "doh","don","do","eeoc","ehr","emr","emt","eod","eow","er",
-  "evp","fda","fl","flsa","fmla","fte","ft","ga","gme","gm",
-  "hi","hipaa","hr","hris","huc","ia","ic","icu","id","il",
-  "in","iv","jcaho","kpi","ks","ky","la","li","lmft","lmsw",
-  "loa","lpc","lpn","lcsw","lt","ltac","lvn","ma","md","me",
-  "mi","mlt","mn","mo","ms","msp","mt","nc","nd","nda","ne",
-  "nh","nicu","nj","nm","noc","np","nrp","nv","ny","oh","ok",
-  "or","osha","ot","pa","pacu","pals","pc","pct","pe","picu",
-  "ppc","prn","pt","pto","rd","rfp","ri","rn","rpo","rt","rto",
-  "sc","sd","sla","slp","smb","snf","stop","start","svp","ta",
-  "tjc","tn","tx","ut","va","vt","vms","vp","wa","wfh","wi",
-  "wv","wy","yoy","ltc","uc","urgent care","ak"
+  "acls", "ada", "ak", "al", "alf", "ama", "ana", "ar", "ats", "az",
+  "bgc", "bls", "ca", "cdc", "cm", "cma", "cme", "cmo", "cms", "cn",
+  "cna", "cns", "co", "coo", "cota", "covid", "crna", "ct", "cto", "dc",
+  "de", "do", "doh", "don", "eeoc", "ehr", "emr", "emt", "eod", "eow",
+  "er", "evp", "fda", "fl", "flsa", "fmla", "ft", "fte", "ga", "gm",
+  "gme", "hi", "hipaa", "hr", "hris", "huc", "ia", "ic", "icu", "id",
+  "il", "in", "iv", "jcaho", "kpi", "ks", "ky", "la", "lcsw", "li",
+  "lmft", "lmsw", "loa", "lpc", "lpn", "lt", "ltac", "ltc", "lvn", "ma",
+  "md", "me", "mi", "mlt", "mn", "mo", "ms", "msp", "mt", "nc",
+  "nd", "nda", "ne", "nh", "nicu", "nj", "nm", "noc", "np", "nrp",
+  "nv", "ny", "oh", "ok", "or", "osha", "ot", "pa", "pacu", "pals",
+  "pc", "pct", "pe", "picu", "ppc", "prn", "pt", "pto", "rd", "rfp",
+  "ri", "rn", "rpo", "rt", "rto", "sc", "sd", "sla", "slp", "smb",
+  "snf", "start", "stop", "svp", "ta", "tjc", "tn", "tx", "uc", "urgent care",
+  "ut", "va", "vms", "vp", "vt", "wa", "wfh", "wi", "wv", "wy", "yoy"
 ];
 
 function convertToCSV(data) {
@@ -203,101 +203,52 @@ function openTableInNewWindow(processedLogs) {
       <title>Bulk SMS Content Checker Output</title>
       <style>
         body {
-          font-family: sans-serif;
-          margin: 1rem;
+          font-family: system-ui, -apple-system, sans-serif;
+          margin: 2rem;
+          line-height: 1.5;
+          color: #11191f;
         }
         table {
-          border-collapse: collapse;
           width: 100%;
-          font-size: 0.8rem;
+          border-collapse: collapse;
+          margin: 1rem 0;
+          font-size: 0.875rem;
         }
         th, td {
-          border: 1px solid #ccc;
-          padding: 0.5rem;
+          padding: 0.75rem;
           text-align: left;
-          vertical-align: top;
+          border: 1px solid #d1d5db;
         }
         thead {
-          background: #f9f9f9;
+          background-color: #f3f4f6;
         }
         .has-warnings {
-          background-color: #ffe6e6;
+          background-color: #fef2f2;
         }
         td[data-label="body"],
         td[data-label="Body"] {
           max-width: 400px;
-          white-space: normal;
           word-wrap: break-word;
-          overflow-wrap: break-word;
-        }
-        @media only screen and (max-width: 800px) {
-          table, thead, tbody, tr, th, td {
-            display: block;
-          }
-          tr {
-            margin-bottom: 1rem;
-            border: 1px solid #ccc;
-            padding: 0.5rem;
-          }
-          th {
-            display: none;
-          }
-          td {
-            border: none;
-            padding: 0.5rem 0;
-            position: relative;
-            padding-left: 45%;
-            text-align: left;
-            word-wrap: break-word;
-            white-space: normal;
-          }
-          td:before {
-            content: attr(data-label);
-            position: absolute;
-            left: 0;
-            width: 40%;
-            padding-left: 0.5rem;
-            font-weight: bold;
-            white-space: nowrap;
-          }
         }
       </style>
     </head>
     <body>
-      <h2>Bulk SMS Content Checker Output</h2>
+      <h1>SMS Content Check Results</h1>
       <table>
         <thead>
-          <tr></tr>
+          <tr>${Object.keys(processedLogs[0]).map(header => `<th>${header}</th>`).join("")}</tr>
         </thead>
-        <tbody></tbody>
+        <tbody>
+          ${processedLogs.map(log => `
+            <tr class="${log.warnings ? 'has-warnings' : ''}">
+              ${Object.values(log).map(value => `<td>${value}</td>`).join("")}
+            </tr>
+          `).join("")}
+        </tbody>
       </table>
     </body>
     </html>
   `);
-  newWin.document.close();
-  if (!processedLogs.length) return;
-  const doc = newWin.document;
-  const theadRow = doc.querySelector("thead tr");
-  const tbody = doc.querySelector("tbody");
-  const headers = Object.keys(processedLogs[0]);
-  headers.forEach(header => {
-    const th = doc.createElement("th");
-    th.textContent = header;
-    theadRow.appendChild(th);
-  });
-  processedLogs.forEach(row => {
-    const tr = doc.createElement("tr");
-    if (row.Warnings && row.Warnings !== "No Warnings") {
-      tr.classList.add("has-warnings");
-    }
-    headers.forEach(header => {
-      const td = doc.createElement("td");
-      td.setAttribute("data-label", header);
-      td.textContent = row[header];
-      tr.appendChild(td);
-    });
-    tbody.appendChild(tr);
-  });
 }
 
 function processLogs(logs) {
@@ -369,7 +320,7 @@ fileInput.addEventListener("change", () => {
   }
   const file = fileInput.files[0];
   const reader = new FileReader();
-  reader.onload = function(e) {
+  reader.onload = function (e) {
     try {
       const extension = (file.name.split(".").pop() || "").toLowerCase();
       if (extension === "json") {

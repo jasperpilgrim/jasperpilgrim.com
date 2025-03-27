@@ -28,31 +28,27 @@
   </header>
   <main>
     <h1>Bulk SMS Content Checker</h1>
-    <div class="grid-container">
-      <div class="grid-row" id="controlRow">
-        <details>
-          <summary>Show/Hide Warnings</summary>
-          <div class="toggle-group">
-            <label><input type="checkbox" class="warning-toggle" data-warning-type="emojisAndSpecialCharacters" checked> Emojis & Special Characters</label>
-            <label><input type="checkbox" class="warning-toggle" data-warning-type="characterLimit" checked> Character Limit</label>
-            <label><input type="checkbox" class="warning-toggle" data-warning-type="dollarSigns" checked> Dollar Signs</label>
-            <label><input type="checkbox" class="warning-toggle" data-warning-type="exclamationPoints" checked> Exclamation Points</label>
-            <label><input type="checkbox" class="warning-toggle" data-warning-type="urlsAndAtSymbols" checked> URLs & "@ Symbols</label>
-            <label><input type="checkbox" class="warning-toggle" data-warning-type="wordsToAvoid" checked> Words & Phrases to Avoid</label>
-            <label><input type="checkbox" class="warning-toggle" data-warning-type="uppercaseWords" checked> Uppercase Words</label>
-          </div>
-        </details>
-        <div class="file-input">
-          <input type="file" id="fileInput" accept=".json,.csv">
+    <div id="controls">
+      <details>
+        <summary>Show/Hide Warnings</summary>
+        <div class="toggle-group">
+          <label><input type="checkbox" class="warning-toggle" data-warning-type="emojisAndSpecialCharacters" checked> Emojis & Special Characters</label>
+          <label><input type="checkbox" class="warning-toggle" data-warning-type="characterLimit" checked> Character Limit</label>
+          <label><input type="checkbox" class="warning-toggle" data-warning-type="dollarSigns" checked> Dollar Signs</label>
+          <label><input type="checkbox" class="warning-toggle" data-warning-type="exclamationPoints" checked> Exclamation Points</label>
+          <label><input type="checkbox" class="warning-toggle" data-warning-type="urlsAndAtSymbols" checked> URLs & "@ Symbols</label>
+          <label><input type="checkbox" class="warning-toggle" data-warning-type="wordsToAvoid" checked> Words & Phrases to Avoid</label>
+          <label><input type="checkbox" class="warning-toggle" data-warning-type="uppercaseWords" checked> Uppercase Words</label>
         </div>
-      </div>
+      </details>
+      <input type="file" id="fileInput" accept=".json,.csv">
+    </div>
 
-      <div class="grid-row" id="summaryRow">
-        <div id="summaryInfo"></div>
-        <div id="linkRow">
-          <a id="downloadLink" href="#" download="sms_warnings.csv" style="display: none;">Download CSV</a>
-          <a id="viewTableLink" href="#" style="display: none;">View in Browser</a>
-        </div>
+    <div id="results">
+      <div id="summaryInfo"></div>
+      <div id="linkRow">
+        <a id="downloadLink" href="#" download="sms_warnings.csv" style="display: none;">Download CSV</a>
+        <a id="viewTableLink" href="#" style="display: none;">View in Browser</a>
       </div>
     </div>
     <script type="module" src="script.js"></script>
